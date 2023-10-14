@@ -1,0 +1,39 @@
+<section class="p-20">
+    <div class="mobile-rectangle hide-big-screen"></div>
+    <div class="title">
+        <h1>Leute hinzufügen</h1>
+        <mat-icon mat-button mat-dialog-close class="close-dialog">close</mat-icon>
+    </div>
+    <div class="channel-name">
+        <div>
+            <mat-icon class="tag">tag</mat-icon>
+            <span>{{ chatService.currentChatData.channelName }}</span>
+        </div>
+        <div id="userAlreadyExists" *ngIf="userAlreadyAdded">Nutzer bereits ausgewählt</div>
+    </div>
+    <div class="relative">
+        <input class="input-name" type="text" placeholder="Name eingeben" [(ngModel)]="inputSearchUser"
+            (input)="filterUsers()">
+
+        <div *ngIf="selectedUsers.length > 0" class="input-name-replace">
+            <div *ngFor="let user of selectedUsers" class="clear-input-name">
+                <img [src]="user.avatar">
+                <span>{{ user.user_name }}</span>
+                <mat-icon (click)="removeSelectedUser(user)">close</mat-icon>
+            </div>
+        </div>
+        <div class="search-user-popup" *ngIf="loading && inputSearchUser.length">Nutzer werden geladen...</div>
+        <div class="search-user-popup" *ngIf="filteredUsers?.length == 0 && !loading">Keine Übereinstimmung gefunden
+        </div>
+        <div class="search-user-popup" *ngIf="inputSearchUser.length && filteredUsers.length > 0 && !loading">
+            <div *ngFor="let user of filteredUsers" (click)="selectUser(user)">
+                <img [src]="user.avatar">
+                <span>{{ user.user_name }}</span>
+            </div>
+        </div>
+    </div>
+    <div class="add-member-channel">
+        <button class="primary-button" (click)="addNewMember()"
+            [disabled]="selectedUsers.length === 0">Hinzufügen</button>
+    </div>
+</section>

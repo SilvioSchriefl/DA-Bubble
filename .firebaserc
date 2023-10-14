@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "dabubble-f0c5b": {
+      "hosting": {
+        "DABubble": [
+          "dabubble-f0c5b"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "dabubble-f0c5b"
+  }
+}

@@ -1,0 +1,197 @@
+.signin_div {
+  z-index: 1;
+  box-sizing: border-box;
+  position: absolute;
+  left: calc(50% - 303px);
+  top: calc(50% - 385px);
+  width: 606px;
+  height: 769px;
+  border-radius: 30px;
+  gap: 43px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 50px;
+}
+.signin_div span {
+  text-align: center;
+}
+
+.headline {
+  font-size: 46px;
+  font-weight: 700;
+  color: #444DF2;
+}
+
+.forgot_pw {
+  transition: 200ms;
+  background-color: transparent;
+  border-radius: 30px;
+  width: 201px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #797EF3;
+  font-size: 18px;
+  font-family: "Figtree", sans-serif;
+}
+.forgot_pw:hover {
+  cursor: pointer;
+  background-color: #ECEEFE;
+}
+
+.or {
+  font-size: 18px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.or img {
+  height: 1px;
+  width: 200px;
+}
+
+input {
+  font-size: 18px;
+  font-weight: 500;
+  padding-left: 60px;
+  border: 1px solid transparent;
+  transition: 200ms;
+  box-sizing: border-box;
+  outline: none;
+  width: 100%;
+  height: 60px;
+  background: #ECEEFE;
+  border-radius: 100px;
+}
+input:hover {
+  cursor: pointer;
+  border: 1px solid #686868;
+}
+input:focus {
+  border: 1px solid #535AF1;
+}
+
+.input_img {
+  position: absolute;
+  left: 24px;
+  top: 23px;
+}
+
+.input_img_2 {
+  position: absolute;
+  left: 24px;
+  top: 19px;
+}
+
+.input_div {
+  width: 100%;
+  position: relative;
+}
+
+.google_button {
+  border: 1px solid transparent;
+  transition: 200ms;
+  box-sizing: border-box;
+  transition: 200ms;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  background-color: #ECEEFE;
+  width: 100%;
+  border-radius: 100px;
+  height: 60px;
+  justify-content: center;
+  gap: 16px;
+}
+.google_button:hover {
+  border: 1px solid #686868;
+}
+.google_button span {
+  font-size: 18px;
+  color: #444DF2;
+}
+
+.button_div {
+  display: flex;
+  gap: 30px;
+}
+
+.signin_button {
+  transition: 200ms;
+  font-weight: 700;
+  font-size: 18px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #444DF2;
+  border-radius: 25px;
+  width: 137px;
+  height: 49px;
+}
+.signin_button:hover {
+  background-color: #797EF3;
+  cursor: pointer;
+}
+
+.guest_login_button {
+  transition: 200ms;
+  box-sizing: border-box;
+  color: #444DF2;
+  font-weight: 700;
+  font-size: 18px;
+  border: 1px solid #797EF3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 25px;
+  width: 137px;
+  height: 49px;
+}
+.guest_login_button:hover {
+  background-color: #444DF2;
+  cursor: pointer;
+  color: white;
+}
+
+.confirmation {
+  z-index: 5;
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
+  transform: translateX(110%);
+  color: white;
+  font-size: 36px;
+  font-weight: 700;
+  box-sizing: border-box;
+  width: 530px;
+  height: 150px;
+  background-color: #444DF2;
+  border-radius: 30px;
+  padding: 65px;
+}
+
+.show_confirmation {
+  transition: 800ms;
+  transform: translateX(0);
+}
+
+.white_shadow {
+  transition: 200ms;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+}
+
+.show_shadow {
+  z-index: 4;
+  background-color: rgba(255, 255, 255, 0.468);
+}/*# sourceMappingURL=sign-in.component.css.map */

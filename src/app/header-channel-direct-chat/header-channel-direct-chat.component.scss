@@ -1,0 +1,239 @@
+$hover-background-color: #ECEEFE;
+$hover-text-color: #535AF1;
+$hover-transition: all ease-in-out 125ms;
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0px 6px 6px -2px rgb(0, 0, 0, 0.08);
+    padding: 25px 50px;
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
+    position: sticky;
+    z-index: 1;
+}
+
+.placeholder {
+    box-shadow: none;
+    min-height: 48px;
+}
+
+.chat-receiver {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 20px;
+    padding: 5px 0px;
+    transition: $hover-transition;
+    position: relative;
+    cursor: pointer;
+
+    h1,
+    mat-icon {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .tag {
+        font-style: italic;
+    }
+
+    &:hover {
+        background-color: $hover-background-color;
+        color: $hover-text-color;
+        transition: $hover-transition;
+    }
+}
+
+.chat-receiver-directChat {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: 50px;
+    padding: 0px 5px;
+    padding-right: 10px;
+    transition: $hover-transition;
+    position: relative;
+    cursor: pointer;
+
+    img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }
+
+    h1,
+    mat-icon {
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .tag {
+        font-style: italic;
+    }
+
+    &:hover {
+        background-color: $hover-background-color;
+        color: $hover-text-color;
+        transition: $hover-transition;
+    }
+
+    svg {
+        position: absolute;
+        left: 43px;
+        bottom: -3px;
+        border: 2px solid white;
+        border-radius: 50%;
+    }
+
+    .offline {
+        circle {
+            fill: #686868 !important;
+        }
+    }
+}
+
+.edit-dialog-open {
+    background-color: $hover-background-color;
+    color: $hover-text-color;
+}
+
+.edit-channel {
+    position: absolute;
+    top: 37px;
+    left: 0px;
+    width: 300px;
+    height: 200px;
+    background-color: white;
+    z-index: 100;
+}
+
+.gap-10 {
+    display: flex;
+    gap: 10px;
+}
+
+.items-center {
+    display: flex;
+    align-items: center;
+}
+
+h1 {
+    margin-block-start: unset;
+    margin-block-end: unset;
+}
+
+.members {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.arrow_back {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    transition: 200ms;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+
+    &:hover {
+        border-radius: 100%;
+        background-color: #eceefe;
+    }
+}
+
+.already-members {
+    padding: 3px 10px;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    &:hover {
+        background-color: $hover-background-color;
+        color: $hover-text-color;
+        cursor: pointer;
+        transition: $hover-transition;
+    }
+
+    span {
+        font-size: 18px;
+        font-weight: 700;
+    }
+}
+
+
+.already-members-avatars {
+    display: flex;
+    align-items: center;
+
+
+    img {
+        height: 40px;
+        width: 40px;
+        border: 3px solid white;
+        border-radius: 100%;
+        margin-left: -10px;
+        background-color: white;
+        background-color: #434DF2;
+    }
+
+    :first-child {
+        margin-left: unset !important;
+    }
+}
+
+.add-members {
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+        padding: 10px;
+        border-radius: 100%;
+        background-color: $hover-background-color;
+        cursor: pointer;
+    }
+
+    &:hover mat-icon {
+        color: $hover-text-color;
+        transition: $hover-transition;
+    }
+}
+
+@media (max-width: 1500px) {
+    header {
+        padding: 25px 15px;
+    }
+
+    .chat-receiver-directChat {
+
+        mat-icon,
+        h1 {
+            font-size: 20px;
+        }
+    }
+
+    .chat-receiver {
+
+        mat-icon,
+        h1 {
+            font-size: 20px;
+        }
+    }
+}
+
+@media (max-width: 1280px) {
+    header {
+        padding: 25px 15px;
+    }
+}
+
+@media (max-width: 1000px) {
+
+    .already-members {
+        display: none;
+    }
+}

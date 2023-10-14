@@ -1,0 +1,71 @@
+.imprint_main {
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+    width: 606px;
+    border-radius: 30px;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 50px;
+    p {
+        font-size: 20px;
+    }
+}
+
+.arrow_back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 200ms;
+    position: absolute;
+    top: 61px;
+    right: 55px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    &:hover {
+        border-radius: 100%;
+        background-color: #ECEEFE;
+    }
+}
+
+.headline {
+    margin-bottom: 25px;
+    font-size: 46px;
+    font-weight: 700;
+    color: #444DF2;
+}
+
+.contact {
+    margin-top: 18px;
+    font-size: 32px !important;
+    font-weight: 700;
+    color: #444DF2;
+}
+
+@media screen and (max-width: 750px) {
+
+    .imprint_main {
+        width: 100%;
+    }
+
+    .arrow_back {
+        top: 15px;
+        right: 19px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+
+   
+
+    .headline {
+        font-size: 32px;
+    }
+
+    .imprint_main {
+        padding: 30px;
+    }
+}

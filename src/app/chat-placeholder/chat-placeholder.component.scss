@@ -1,0 +1,23 @@
+.noChatSelected-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  margin: 0px 60px;
+  height: calc(100% - 98px - 225px);
+  overflow-y: scroll;
+  gap: 10px;
+  font-size: 20px;
+  color: rgb(78, 78, 78);
+}
+
+.placeholder_decription {
+  width: 100%;
+}
+
+@media (max-width: 1280px) {
+  .noChatSelected-placeholder {
+    margin: 0px 15px;
+    height: calc(100% - 98px - 160px);
+    padding: 0px 15px;
+  }
+}

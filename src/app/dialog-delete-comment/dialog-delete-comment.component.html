@@ -1,0 +1,13 @@
+<div class="headline">
+    <h3>Nachricht löschen</h3>
+    <span>Bist du sicher, dass du diese Nachricht löschen möchtest? Das kann nicht rückgängig gemacht werden.</span>
+</div>
+<div class="delete_comment_main">
+    <div class="delete_comment_div">
+        {{data.comment}}
+    </div>
+</div>
+<div class="button_div">
+    <button class="secondary-button" (click)="onNoClick()">Abbrechen</button>
+    <button class="primary-button-red" [mat-dialog-close]="data.comment">Löschen</button>
+</div>

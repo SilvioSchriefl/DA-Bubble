@@ -1,0 +1,183 @@
+$hover-background-color: #eceefe;
+$hover-text-color: #535af1;
+$hover-transition: all ease-in-out 125ms;
+
+.edit-message-container {
+  transition: $hover-transition;
+  background-color: $hover-background-color;
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  padding: 10px 60px;
+}
+
+.edit-message {
+  padding: 10px 60px;
+  padding: 20px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #adb0d9;
+  width: 100%;
+  height: 130px;
+  background-color: white;
+
+  &:hover {
+    border: 1px solid #797ef3;
+  }
+
+  textarea {
+    font-weight: 400;
+    font-size: 18px;
+    border: none;
+    resize: none;
+    height: 100%;
+    background-color: transparent;
+  }
+
+  textarea:focus {
+    outline: none;
+  }
+
+  textarea::placeholder {
+    color: #686868;
+  }
+}
+
+.extend-send-message {
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.send-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border: none;
+  cursor: pointer;
+
+  mat-icon {
+    color: #686868;
+  }
+}
+
+.extend-message {
+  display: flex;
+  align-items: center;
+  color: #686868;
+
+  &:hover mat-icon {
+    color: black;
+  }
+
+  mat-icon {
+    border-radius: 100%;
+    padding: 8px;
+    cursor: pointer;
+    transition: $hover-transition;
+
+    &:hover {
+      background-color: $hover-background-color;
+      color: $hover-text-color;
+      transition: $hover-transition;
+      font-weight: 600;
+    }
+  }
+}
+
+.z_index {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  position: relative;
+}
+
+.emoji_picker {
+  display: none;
+  z-index: 10;
+  position: absolute;
+  bottom: 30px;
+  left: 30px;
+}
+
+.edit-message-buttons {
+  gap: 25px;
+  display: flex;
+}
+
+.save-edit-message {
+  padding: 12px 25px;
+  border-radius: 25px;
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  background-color: $hover-text-color;
+  border: transparent;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #797ef3;
+  }
+
+  &:disabled {
+    background-color: #686868;
+  }
+}
+
+.cancel-edit-message {
+  background-color: white;
+  color: $hover-text-color;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 12px 25px;
+  border: unset;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: $hover-transition;
+
+  &:hover {
+    background-color: #797ef3;
+    color: white;
+    transition: $hover-transition;
+  }
+}
+
+.img-user {
+  display: flex;
+  align-items: flex-start;
+
+  img {
+    margin-top: 10px;
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+  }
+}
+
+@media (max-width: 1500px) {
+  .edit-message-container {
+    padding: 10px 15px;
+  }
+
+  .edit-message {
+    height: 95px;
+  }
+}
+
+@media (max-width: 500px) {
+  .img-user {
+    display: none;
+  }
+
+  .edit-message-buttons {
+    gap: 3px;
+  }
+
+  .save-edit-message {
+    padding: 0px 10px;
+  }
+}

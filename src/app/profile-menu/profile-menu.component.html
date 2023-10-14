@@ -1,0 +1,116 @@
+<div *ngIf="!fsDataThreadService.detailsVisible && !detailsVisible && !editAvatarVisible" id="menu-container">
+    <div class="profile_logout" (click)="toggleDetails()">
+        <img src="assets/img/icons/account_circle.png" alt="">
+        <span >Profil</span>
+    </div>
+    <div class="profile_logout" (click)="signOut()">
+        <img src="assets/img/icons/logout.png" alt="">
+        <span >Log out</span>
+    </div>
+</div>
+
+<div id="mobile-menu-container" *ngIf="!fsDataThreadService.detailsVisible && !detailsVisible && !editAvatarVisible">
+    <div id="rectangle"></div>
+    <div style="cursor: pointer;" (click)="toggleDetails()">
+        <img src="assets/img/icons/account_circle.png" alt="">
+        <span>Profil</span>
+    </div>
+    <div (click)="signOut()" style="cursor: pointer;">
+        <img src="assets/img/icons/logout.png" alt="">
+        <span>
+            Log out
+        </span>
+    </div>
+</div>
+
+<div id="profileDetails" *ngIf="detailsVisible || fsDataThreadService.detailsVisible">
+    <div class="header-container">
+        <span>Profil</span>
+        <mat-icon class="close-dialog" (click)="toggleDetails()" mat-button mat-dialog-close>close</mat-icon>
+    </div>
+
+    <img class="profileImg" [src]="authService.userData.avatar" alt="">
+
+    <div class="middle-part">
+        <div class="edit-container">
+            <span id="name">{{ authService.userData.user_name }}</span>
+            <span *ngIf="authService.userData.uid !='plaeSD3H9uSglwCNTY5TwDQHb8u1'" id="edit" class="pointer" (click)="toggleEditDetails()">Bearbeiten</span>
+        </div>
+        <div class="status">
+            <svg [ngClass]="{'offline': authService.userData.status === 'Abwesend'}" width="16" height="17"
+                viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8" cy="8.5" r="8" fill="#92C83E" />
+            </svg>
+            <span [ngClass]="{'offline': authService.userData.status === 'Abwesend'}"> {{ authService.userData.status
+                }}</span>
+        </div>
+    </div>
+
+
+    <div *ngIf="authService.userData.uid !='plaeSD3H9uSglwCNTY5TwDQHb8u1'" class="email-container">
+        <img src="assets/img/mail.png" alt="">
+        <span id="email-headline">E-Mail-Adresse</span>
+        <a id="email-address" href="mailto:{{ authService.userData.email }}">{{ authService.userData.email }}</a>
+    </div>
+</div>
+
+
+<div id="editProfile" *ngIf="editDetailsVisible">
+    <div class="header-container">
+        <span>Dein Profil bearbeiten</span>
+        <mat-icon class="close-dialog" (click)="toggleEditDetails()" mat-dialog-close>close</mat-icon>
+    </div>
+
+    <img class="profileImg" [src]="authService.userData.avatar" (click)="editAvatarImage()">
+
+    <div class="middle-part">
+
+        <div id="edit-name">
+            <div id="edit-name-headline">
+                <img src="assets/img/icons/account_circle.png" alt="">
+                <span>Vollständiger Name</span>
+            </div>
+            <input type="text" [(ngModel)]="current_username" placeholder="{{ current_username }}">
+        </div>
+
+        <div id="edit-email">
+            <div id="edit-email-headline">
+                <img src="assets/img/mail.png" alt="">
+                <span>E-Mail-Adresse</span>
+            </div>
+            <input type="text" [(ngModel)]="current_email" placeholder="{{ current_email }}">
+        </div>
+    </div>
+
+    <div class="btn-container">
+        <button class="secondary-button" (click)="toggleEditDetails()">Abbrechen</button>
+        <button class="primary-button" (click)="updateUserDetails()" [disabled]="current_username == this.authService.userData.user_name &&
+             current_email == this.authService.userData.email">Speichern</button>
+    </div>
+</div>
+
+
+<div class="edit_avatar_div" *ngIf="editAvatarVisible">
+    <div class="header-container">
+        <span>Dein Profilbild bearbeiten</span>
+        <mat-icon class="close-dialog" (click)="closeEditAvatar()" mat-dialog-close>close</mat-icon>
+    </div>
+    <img class="profileImg" [src]="current_imageUrl">
+    <span>Wähle einen Standard Avatar...</span>
+    <div class="avatar_images">
+        <div (click)="showPreviewAvatar(images[i])" *ngFor="let img of images; let i = index">
+            <img src="{{images[i]}}" alt="">
+        </div>
+    </div>
+    <div class="upload_div">
+        <span>oder lade selbst ein Bild hoch.</span>
+        <input id="file" type="file" (change)="onFileSelected($event)">
+        <label class="upload_button" for="file"><img src="/assets/img/icons/arrow_up.png" alt=""></label>
+    </div>
+
+    <div class="buttons">
+        <button class="secondary-button" (click)="onNoClick()">Abbrechen</button>
+        <button class="primary-button" (click)="saveNewAvatar()">Speichern</button>
+    </div>
+    <div class="error" *ngIf="file_error">Bitte wähle ein Bildformat !</div>
+</div>

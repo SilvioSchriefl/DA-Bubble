@@ -1,0 +1,52 @@
+<!--------------------------------------------------- upload -------------------------------------------------------->
+<div class="upload_main" *ngIf="uploadService.chat_section != 'thread'">
+    <div *ngFor="let file of uploadService.upload_array.file_name; let i = index" [style.bottom.px]="i * 65"
+        class="upload_content">
+        <img class="file_image" src="/assets/img/File-Types/{{uploadService.upload_array.file_extension[i]}}.png">
+        <div style="z-index: 1;">{{file}}</div>
+        <div class="progress_load" [style.width.%]="uploadService.uploadProgressArray[i]"></div>
+        <div class="delete_file">
+            <img (click)="uploadService.removeFile(i)" src="/assets/img/icons/close.png" alt="">
+        </div>
+    </div>
+</div>
+<section class="write-new-message">
+    <textarea [disabled]="noChatSelected()" #messageTextarea name="" id="" cols="10" rows="2"
+        [placeholder]="chatService.messageToPlaceholder" (keydown)="handleEnter($event)"
+        [(ngModel)]="msgService.messageText" (keyup.enter)="onSendClick()"></textarea>
+    <div class="extend-send-message">
+        <div class="extend-message">
+            <div [class.show_edit_comment]="open_attachment_menu" class="edit_comment">
+                <input id="fileInput" type="file" (change)="uploadService.onFileSelected($event)">
+                <label class="menu_button" for="fileInput">Datei anhängen</label>
+            </div>
+            <div class="at_user_div" *ngIf="open_users">
+                <div>
+                    <div class="user" *ngFor="let user of chatService.at_users; let i = index"
+                        (click)="addUserToTextarea(i)">
+                        <img class="user_img" [src]="user.avatar">
+                        <div>{{user.user_name}}</div>
+                    </div>
+                </div>
+            </div>
+            <button class="add-attachment" (click)="togglePopup('open_attachment_menu');" [disabled]="noChatSelected()">
+                <mat-icon>add</mat-icon>
+            </button>
+            <div class="parting-line"></div>
+            <button [disabled]="noChatSelected()"
+                (click)="togglePopup('emojiPicker_open'); emojiService.openEmojiPicker(-2);"
+                class="open-emojiPicker emojiPickerMessage">
+                <emoji-mart [class.d_flex]="emojiService.emojiPicker_open && emojiService.picker_index == -2"
+                    class="emoji_picker" (emojiClick)="addEmojitoTextarea($event);">
+                </emoji-mart>
+                <mat-icon>mood</mat-icon>
+            </button>
+            <button [disabled]="noChatSelected()"
+                (click)="togglePopup('open_users')"><mat-icon>alternate_email</mat-icon></button>
+        </div>
+        <button (click)="onSendClick()" [ngClass]="{'ready-to-send': noFileSelected() || messageEmpty()}"
+            [disabled]="!noFileSelected() && !messageEmpty()" class="send-message">
+            <mat-icon>send</mat-icon>
+        </button>
+    </div>
+</section>

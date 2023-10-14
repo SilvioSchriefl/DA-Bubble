@@ -1,0 +1,25 @@
+<header>
+    <div *ngIf="!genFuncService.changeMobileLogo" class="container-header-img box box-small">
+        <img class="pointer" id="logo" src="assets/img/header-img.png" alt="">
+    </div>
+
+    <div *ngIf="genFuncService.changeMobileLogo" class="mobile-logo-container" (click)="closeChat()">
+        <img id="mobile-arrow" src="assets/img/icons/mobile-arrow.png" alt="">
+        <img id="mobile-logo" src="assets/img/icons/Workspace logo.png" alt="">
+        <span>Code learning</span>
+    </div>
+
+    <app-searchbar id="searchbar" class="box box-large"></app-searchbar>
+
+    <div class="box box-small" id="profile" (click)="openProfileMenu()" #profile>
+        <span id="name"> {{ authService.userData.user_name }}</span>
+        <div id="dot" class="center pointer">
+            <img class="profile-img" [src]="authService.userData.avatar" alt="">
+            <img id="arrow" src="assets/img/icons/arrow_down.png" alt="">
+            <svg [ngClass]="{'offline': authService.userData.status === 'Abwesend'}" width="13" height="14"
+                viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8" cy="8.5" r="8" fill="#92C83E" />
+            </svg>
+        </div>
+    </div>
+</header>

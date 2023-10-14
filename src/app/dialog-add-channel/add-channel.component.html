@@ -1,0 +1,28 @@
+<div class="dialog-container">
+    <div class="head-container">
+        <span>Channel erstellen</span>
+        <mat-icon class="close-dialog" (click)="closeDialog()">close</mat-icon>
+    </div>
+
+    <p> Channels dienen deinem Team zur Kommunikation.
+        Am besten sollten sie themenbezogen sein #marketing zum Beispiel.
+    </p>
+
+    <span>Channel-Name</span>
+
+    <form [formGroup]="form">
+        <div id="channel-input">
+            <img src="assets/img/icons/tag.svg" alt="">
+            <input type="text" formControlName="channel-name" maxlength="12" placeholder="z.B Kooperationsprojekte" required
+                (focus)="error = false">
+            <span *ngIf="error" class="error">Channel-Name existiert bereits</span>
+        </div>
+
+        <span>Beschreibung (optional)</span>
+
+        <input id="optional-input" type="text" formControlName="description" placeholder="Dein Text hier">
+
+        <button class="primary-button" [disabled]="!form.valid" (click)="checkIfChannelNameExist()"
+            #create>Erstellen</button>
+    </form>
+</div>

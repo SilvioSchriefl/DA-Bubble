@@ -1,0 +1,30 @@
+<section>
+    <div class="user-receiver">
+        <img [src]="authService.getImageUrl(chatService.getChatReceiverUser(chatService.currentChatData).uid)"
+            alt="chat receiver image" (click)="profileService.openProfile(chatService.getChatReceiverUser(chatService.currentChatData).uid)">
+        <div>
+            <h1 (click)="profileService.openProfile(chatService.getChatReceiverUser(chatService.currentChatData).uid)">
+                {{ chatService.getChatReceiverUser(chatService.currentChatData).user_name }}
+                <span *ngIf="chatService.currentChatData.chat_Member_IDs[0] ===
+                    chatService.currentChatData.chat_Member_IDs[1]">
+                    (Du)</span>
+            </h1>
+        </div>
+    </div>
+    <span class="text-own-user"
+        *ngIf="chatService.currentChatData.chat_Member_IDs[0] === chatService.currentChatData.chat_Member_IDs[1]">
+        <b>Dieser Raum ist nur für dich da.</b> Mache dir Notizen, liste deine To-dos auf oder bewahre Links und Dateien
+        griffbereit auf. Du kannst hier auch gerne Dinge mit dir selbst besprechen.
+    </span>
+
+    <div class="text-other-user"
+        *ngIf="chatService.currentChatData.chat_Member_IDs[0] !== chatService.currentChatData.chat_Member_IDs[1]">
+        <span>
+            Diese Unterhaltung findet nur zwischen
+        </span>
+        <span class="highlight-user"
+            (click)="profileService.openProfile(chatService.getChatReceiverUser(chatService.currentChatData).uid)">@{{
+            chatService.getChatReceiverUser(chatService.currentChatData).user_name }} </span>
+        <span>und dir statt.</span>
+    </div>
+</section>

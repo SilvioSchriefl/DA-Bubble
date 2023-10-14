@@ -1,0 +1,22 @@
+<div class="choose_avatar_div">
+    <div class="headline">Wähle deinen Avatar</div>
+    <img  src="{{authService.userData.avatar}}" alt="">
+
+    <span>{{authService.userData.user_name}}</span>
+    <div class="choose">
+        <span>Wähle einen Standard Avatar...</span>
+        <div class="avatar_images">
+            <div (click)="setAvatar(images[i])" *ngFor="let img of images; let i = index">
+                <img src="{{images[i]}}" alt="">
+            </div>
+        </div>
+        <div class="upload_img_div">
+            <span>oder lade selbst ein Bild hoch.</span>
+            <input id="fileInput" type="file" (change)="onFileSelected($event)" >
+            <label class="upload_button" for="fileInput">Foto hochladen</label>
+        </div>
+        
+    </div>
+    <div (click)="goToMain()" class="go_on_button">Weiter</div>
+</div>
+<div [class.show_error]="file_error" class="file_error">Bitte wähle eine Bilddatei</div>

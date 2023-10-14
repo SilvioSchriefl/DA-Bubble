@@ -1,0 +1,34 @@
+<div class="container">
+    <header>
+        <span id="headline">Neue Nachricht</span>
+        <div class="input-container">
+            <span>An: </span>
+            <input id="input" [(ngModel)]="inputValue" (ngModelChange)="valueChange(inputValue)" type="text"
+                placeholder="#channel, @jemand oder E-Mail-Adresse">
+        </div>
+    </header>
+    <div id="autocomplete" [ngClass]="{'d-none': !showAutocomplete || !inputValue }">
+        <div *ngFor="let user of filteredUsersByName" class="dm-profile pointer sidebar-hover"
+            (click)="selectValue($event, 'userName', user)">
+            <img src="assets/img/icons/account_circle.svg" alt="">
+            <span>{{ user.user_name }}</span>
+        </div>
+        <div *ngFor="let user of filteredUsersByEmail" class="dm-profile pointer sidebar-hover"
+            (click)="selectValue($event, 'userEmail', user)">
+            <img src="assets/img/mail.png" alt="">
+            <span>{{ user.email }}</span>
+        </div>
+        <div class="channel-container" *ngFor="let channel of filteredChannels" class="dm-profile pointer sidebar-hover"
+            (click)="selectValue($event, 'channel', channel.channel_ID)">
+            <img src=" assets/img/icons/workspaces.svg" alt="">
+            <span class="tag">#</span>
+            <span>{{ channel.channelName }}</span>
+        </div>
+        <div *ngIf="inputValue && filteredUsersByName.length === 0 && filteredUsersByEmail.length === 0 && 
+        filteredChannels.length === 0" class="no-match-found">
+            Keine Übereinstimmungen gefunden
+        </div>
+    </div>
+    <app-channel-direct-send-message [selectedValue]="selectedValue"
+        [inputValue]="inputValue"></app-channel-direct-send-message>
+</div>

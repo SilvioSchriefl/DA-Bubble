@@ -1,0 +1,348 @@
+<header>
+    <div class="header_content">
+        <div class="channel">
+            <span>Thread</span>
+            <span
+                *ngIf="this.chatService.currentChatSection == 'channels'">#{{fsDataThreadService.current_channelname}}</span>
+            <span
+                *ngIf="this.chatService.currentChatSection == 'chats'">{{chatService.getChatReceiverUser(this.chatService.currentChatData)?.user_name}}</span>
+        </div>
+        <div class="close-profile-menu">
+            <mat-icon style="font-weight: 400;" (click)="closeThread(false)">close</mat-icon>
+        </div>
+    </div>
+</header>
+
+
+<div #ChatContainerREF *ngIf="chatService.thread_open" class="thread_content">
+    <div class="message_div "
+        [class.row_reverse]="fsDataThreadService.current_chat_data?.user_Sender_ID == authService.userData.uid">
+
+        <div [class.show_edit_comment]="edit_comment && edit_comment_index == -1  " class="edit_comment"
+            (click)="openEditComment(-1)">
+            <div class="menu_button" (click)="openEditMessage()" (click)="genFunctService.stopPropagation($event)">
+                <span>Nachricht bearbeiten</span>
+            </div>
+            <div class="menu_button" (click)="openDeleteMessage()" (click)="genFunctService.stopPropagation($event)">
+                <span>Nachricht löschen</span>
+            </div>
+        </div>
+
+        <emoji-mart [class.d_block]="emojiPicker_open && picker_index == -1" class="emoji_picker"
+            (click)="genFunctService.stopPropagation($event) "
+            (emojiClick)="addEmojiInDirectMessage($event, fsDataThreadService.direct_chat_index)"></emoji-mart>
+
+        <div *ngIf="fsDataThreadService.current_chat_data.user_Sender_ID != authService.userData.uid && !fsDataThreadService.current_chat_data?.message_deleted"
+            (click)="openEmojiPicker(-1, 'message')" (click)="genFunctService.stopPropagation($event)"
+            class="reaction_emojy">
+            <div class="emojy"><img src="/assets/img/icons/add_reaction.png" alt=""></div>
+        </div>
+
+        <div *ngIf="fsDataThreadService.current_chat_data.user_Sender_ID == authService.userData.uid && !fsDataThreadService.current_chat_data?.message_deleted"
+            (click)="openEmojiPicker(-1, 'message')" (click)="genFunctService.stopPropagation($event)"
+            class="reaction_emojy_user">
+            <div class="emojy">
+                <img src="/assets/img/icons/add_reaction.png" alt="">
+            </div>
+            <div class="emojy" (click)="openEditCommentMenu(-1)" (click)="genFunctService.stopPropagation($event)">
+                <img src="/assets/img/icons/more_vert.png">
+            </div>
+        </div>
+
+
+        <div class="bottom_line" *ngIf="fsDataThreadService.comments?.length > 0">
+            <div style="display: flex; min-width: fit-content;">
+                <span>{{fsDataThreadService.comments.length}} Antwort</span>
+                <div style="width: max-content;" *ngIf="fsDataThreadService.comments?.length > 1">en</div>
+            </div>
+
+            <div class="line"></div>
+        </div>
+        <img class="avatar_img"
+            (click)="profileService.openProfile(fsDataThreadService.current_chat_data.user_Sender_ID)"
+            [src]="getImageUrl(fsDataThreadService.current_chat_data?.user_Sender_ID)">
+        <div class="message_sub">
+            <div class="user_time">
+                <span
+                    (click)="profileService.openProfile(fsDataThreadService.current_chat_data.user_Sender_ID)">{{authService.getUserInfo(fsDataThreadService.current_chat_data.user_Sender_ID).user_name}}</span>
+                <span>{{fsDataThreadService.getTimeSince(fsDataThreadService.current_chat_data.created_At.seconds)}}</span>
+            </div>
+
+            <!--------------------------------------------Message---------------------------------------------------------------------------------->
+
+
+            <div class="deleted" *ngIf="fsDataThreadService.current_chat_data?.message_deleted">
+                <mat-icon>delete_outline</mat-icon>
+                {{fsDataThreadService.current_chat_data.chat_message}}
+            </div>
+
+            <div class="message" *ngIf="!fsDataThreadService.current_chat_data?.message_deleted && fsDataThreadService.current_chat_data.chat_message != ''"
+                [class.message_user]="fsDataThreadService.current_chat_data?.user_Sender_ID == authService.userData.uid">
+                <span (click)="profileService.openProfile(word)"
+                    *ngFor="let word of fsDataThreadService.current_chat_data.modified_message; let k = index"
+                    [class.highlighted]="chatService.checkIfWordIsAnId(word)">
+                    {{chatService.renameUid(word)}}
+                    <ng-container *ngIf="chatService.checkForBreak(word)"><br></ng-container>
+                </span>
+                <div style="font-size: 10px;" *ngIf="fsDataThreadService.current_chat_data.chat_message_edited">
+                    (bearbeitet)</div>
+            </div>
+            <div class="emoji_main">
+                <div *ngFor="let item of 0" class="emoji_count" matTooltip="{{react_user}} hat reagiert">
+                    <ngx-emoji class="center" [emoji]="" size="24"></ngx-emoji>
+                    <span></span>
+                </div>
+            </div>
+
+            <!-----------------------------------------------Message upload----------------------------------------------------------------------->
+
+
+            <div class="uploaded_main">
+                <div *ngFor="let file of fsDataThreadService.current_chat_data.uploaded_files.file_name; let k = index"
+                    class="upload_content"
+                    (click)="uploadService.downloadFile(fsDataThreadService.current_chat_data.uploaded_files.download_link[k])"
+                    style="cursor: pointer;">
+                    <img class="file_image"
+                        src="/assets/img/File-Types/{{fsDataThreadService.current_chat_data.uploaded_files.file_extension[k]}}.png">
+                    <div>
+                        {{uploadService.checkFileName(fsDataThreadService.current_chat_data.uploaded_files.file_name[k])}}
+                    </div>
+                    <div class="delete_file" *ngIf="fsDataThreadService.current_chat_data.user_Sender_ID == authService.userData.uid">
+                        <img (click)="deleteUploadFile(fsDataThreadService.current_chat_data.uploaded_files.file_name[k], k)"
+                            src="/assets/img/icons/close.png" (click)="genFunctService.stopPropagation($event)">
+                    </div>
+                </div>
+            </div>
+         
+            <!--------------------------------------------Emoji-------------------------------------------------------------------------------->
+
+            <div class="emoji_main">
+                <div *ngFor="let emoji of fsDataThreadService.current_chat_data.emoji_data; let j = index"
+                    class="emoji_count" (mouseenter)="showReactUsers(-1, j)" (mouseleave)="closeShowReactUsers(-1, j)"
+                    (click)="addOrRemoveEmojisOnDirectChatMessage(fsDataThreadService.direct_chat_index , j)">
+                    <div class="react_user"
+                        [class.show_react_user]="comment_index == -1 && emoji_index == j && hovered_emoji">
+                        <ngx-emoji class="center" [emoji]="fsDataThreadService.current_chat_data.emoji_data[j].emoji"
+                            size="24"></ngx-emoji>
+                        <span
+                            *ngIf="emoji?.react_users?.length <= 2">{{reactionBubbleService.replaceNameWithDu(emoji?.react_users,
+                            false)?.join('
+                            und ')}}</span>
+                        <span
+                            *ngIf="emoji?.react_users?.length === 1 && emoji?.react_users[0] !== authService.getUid()">hat
+                            reagiert</span>
+                        <span
+                            *ngIf="emoji?.react_users?.length === 1 && emoji?.react_users[0] === authService.getUid()">hast
+                            reagiert</span>
+                        <span *ngIf="emoji?.react_users?.length === 2">
+                            haben
+                            reagiert</span>
+                        <span
+                            *ngIf="emoji?.react_users?.length > 2">{{reactionBubbleService.replaceNameWithDu(emoji?.react_users,
+                            true)?.join(', ')}}</span>
+                        <span *ngIf="emoji?.react_users?.length === 3"> und {{
+                            emoji?.react_users?.length - 2 }} weiterer hat
+                            reagiert</span>
+                        <span *ngIf="emoji?.react_users?.length > 3"> und {{
+                            emoji?.react_users?.length - 2 }} weitere haben
+                            reagiert</span>
+                    </div>
+                    <ngx-emoji class="center" [emoji]="fsDataThreadService.current_chat_data.emoji_data[j].emoji"
+                        size="24"></ngx-emoji>
+                    <span>{{fsDataThreadService.current_chat_data.emoji_data[j].count}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-----------------------------------------------------------------Comments----------------------------------------------------------------------------------------->
+
+    <div #comment class="comment_div"
+        [class.row_reverse]="authService.getUserInfo(fsDataThreadService.comments[i]?.uid).user_name == authService.userData.user_name"
+        *ngFor="let comment of fsDataThreadService.fake_array; let i = index; let isLast = last">
+
+        <!-----------------------------------------------------------------Edit Menu----------------------------------------------------------------------------------------->
+
+        <div [class.show_edit_comment]="edit_comment && getUserName(fsDataThreadService.comments[i].uid) == authService.userData.user_name && edit_comment_index == i"
+            class="edit_comment" (click)="openEditComment(i)">
+            <div class="menu_button" (click)="openEditComment(i)" (click)="genFunctService.stopPropagation($event)">
+                <span>Nachricht bearbeiten</span>
+            </div>
+            <div class="menu_button" (click)="openDeleteComment(i)" (click)="genFunctService.stopPropagation($event)">
+                <span>Nachricht löschen</span>
+            </div>
+        </div>
+
+        <!-----------------------------------------------------------------Emoji Picker----------------------------------------------------------------------------------------->
+
+        <emoji-mart [class.d_block]="emojiPicker_open && picker_index == i" class="emoji_picker"
+            [class.emoji_picker_above]="show_picker_above" (click)="genFunctService.stopPropagation($event) "
+            (emojiClick)="addEmojiInThread($event, i)"></emoji-mart>
+        <div *ngIf="authService.getUserInfo(fsDataThreadService.comments[i].uid).user_name != authService.userData.user_name"
+            (click)="openEmojiPicker(i, 'comment')" (click)="genFunctService.stopPropagation($event)"
+            class="reaction_emojy">
+            <div class="emojy"><img src="/assets/img/icons/add_reaction.png" alt=""></div>
+        </div>
+
+        <!-----------------------------------------------------------------add Emoji and Menu----------------------------------------------------------------------------------------->
+
+        <div *ngIf="getUserName(fsDataThreadService.comments[i].uid) == authService.userData.user_name"
+            (click)="openEmojiPicker(i, 'comment')" (click)="genFunctService.stopPropagation($event)"
+            class="reaction_emojy_user">
+            <div class="emojy">
+                <img src="/assets/img/icons/add_reaction.png" alt="">
+            </div>
+            <div class="emojy" (click)="openEditCommentMenu(i)" (click)="genFunctService.stopPropagation($event)">
+                <img src="/assets/img/icons/more_vert.png">
+            </div>
+        </div>
+
+        <!-----------------------------------------------------------------avatar img user and time----------------------------------------------------------------------------------------->
+
+        <img (click)="profileService.openProfile(fsDataThreadService.comments[i].uid)" class="avatar_img"
+            [src]="getImageUrl(fsDataThreadService.comments[i].uid)">
+        <div class="message_sub">
+            <div class="user_time">
+                <span
+                    (click)="profileService.openProfile(fsDataThreadService.comments[i].uid)">{{authService.getUserInfo(fsDataThreadService.comments[i].uid).user_name}}</span>
+                <span>{{fsDataThreadService.getTimeSince(fsDataThreadService.comments[i].time.seconds)}}</span>
+            </div>
+
+            <!----------------------------------------------------------------------comment-------------------------------------------------------------------------------------------->
+
+
+            <div *ngIf="fsDataThreadService.comments[i].comment.length > 0" class="message"
+                [class.message_user]="getUserName(fsDataThreadService.comments[i].uid) == authService.userData.user_name">
+                <span (click)="profileService.openProfile(word)"
+                    *ngFor="let word of fsDataThreadService.comments[i].modified_comment; let k = index"
+                    [class.highlighted]="chatService.checkIfWordIsAnId(word)">
+                    {{chatService.renameUid(word)}}
+                    <ng-container *ngIf="chatService.checkForBreak(word)"><br></ng-container>
+                </span>
+
+
+                <div style="font-size: 10px;" *ngIf="fsDataThreadService.comments[i].text_edited">(bearbeitet)</div>
+            </div>
+
+            <!----------------------------------------------------------------------comment uploads-------------------------------------------------------------------------------------------->
+
+            <div class="uploaded_main">
+                <div *ngFor="let file of fsDataThreadService.comments[i].uploaded_files.file_name; let k = index"
+                    class="upload_content"
+                    (click)="uploadService.downloadFile(fsDataThreadService.comments[i].uploaded_files.download_link[k])"
+                    style="cursor: pointer;">
+                    <img class="file_image"
+                        src="/assets/img/File-Types/{{fsDataThreadService.comments[i].uploaded_files.file_extension[k]}}.png">
+                    <div>
+                        {{uploadService.checkFileName(fsDataThreadService.comments[i].uploaded_files.file_name[k])}}
+                    </div>
+                    <div class="delete_file" *ngIf="fsDataThreadService.comments[i].uid == authService.userData.uid">
+                        <img (click)="uploadService.deleteSelectedFile(fsDataThreadService.comments[i].uploaded_files.file_name[k], i, k)"
+                            src="/assets/img/icons/close.png" (click)="genFunctService.stopPropagation($event)">
+                    </div>
+                </div>
+            </div>
+
+            <!-----------------------------------------------------------------Emojis----------------------------------------------------------------------------------------->
+
+            <div class="emoji_main">
+                <div *ngFor="let emoji of fsDataThreadService.comments[i].emoji_data; let j = index" class="emoji_count"
+                    (mouseenter)="showReactUsers(i, j)" (mouseleave)="closeShowReactUsers(i, j)"
+                    (click)="addOrRemoveEmojIinThread(i, j)">
+                    <div class="react_user"
+                        [class.show_react_user]="comment_index == i && emoji_index == j && hovered_emoji">
+                        <ngx-emoji class="center" [emoji]="emoji.emoji" size="24"></ngx-emoji>
+                        <span
+                            *ngIf="emoji?.react_users?.length <= 2">{{reactionBubbleService.replaceNameWithDu(emoji?.react_users,
+                            false)?.join('
+                            und ')}}</span>
+                        <span
+                            *ngIf="emoji?.react_users?.length === 1 && emoji?.react_users[0] !== authService.getUid()">hat
+                            reagiert</span>
+                        <span
+                            *ngIf="emoji?.react_users?.length === 1 && emoji?.react_users[0] === authService.getUid()">hast
+                            reagiert</span>
+                        <span *ngIf="emoji?.react_users?.length === 2">
+                            haben
+                            reagiert</span>
+                        <span
+                            *ngIf="emoji?.react_users?.length > 2">{{reactionBubbleService.replaceNameWithDu(emoji?.react_users,
+                            true)?.join(', ')}}</span>
+                        <span *ngIf="emoji?.react_users?.length === 3"> und {{
+                            emoji?.react_users?.length - 2 }} weiterer hat
+                            reagiert</span>
+                        <span *ngIf="emoji?.react_users?.length > 3"> und {{
+                            emoji?.react_users?.length - 2 }} weitere haben
+                            reagiert</span>
+                    </div>
+                    <ngx-emoji class="center" [emoji]="fsDataThreadService.comments[i].emoji_data[j].emoji"
+                        size="24"></ngx-emoji>
+                    <span>{{fsDataThreadService.comments[i].emoji_data[j].count}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-----------------------------------------------------------------Upload----------------------------------------------------------------------------------------->
+
+    <div class="upload_main" *ngIf="uploadService.chat_section != 'channel'">
+        <div *ngFor="let file of uploadService.upload_array.file_name; let i = index" class="upload_content">
+            <img class="file_image" src="/assets/img/File-Types/{{uploadService.upload_array.file_extension[i]}}.png">
+            <div style="z-index: 1;">{{uploadService.upload_array.file_name[i]}}</div>
+            <div class="progress_load" [style.width.%]="uploadService.uploadProgressArray[i]"></div>
+            <div class="delete_file">
+                <img (click)="uploadService.removeFile(i)" src="/assets/img/icons/close.png" alt="">
+            </div>
+        </div>
+    </div>
+
+    <!-----------------------------------------------------------------Textarea----------------------------------------------------------------------------------------->
+
+    <div #type_message class="type_message">
+        <div [class.show_edit_comment]="open_attachment_menu" class="add_data">
+            <input id="fileInput" type="file" (change)="uploadService.onFileSelected($event)">
+            <label class="menu_button" for="fileInput">Datei anhängen</label>
+        </div>
+
+        <!------------------------------------------------------------------@User-->
+
+        <div class="at_user_div" *ngIf="chatService.open_users && chatService.at_users.length > 0">
+            <div>
+                <div class="user" *ngFor="let user of chatService.at_users; let i = index"
+                    (click)="addUserToTextarea(i)">
+                    <img class="user_img" [src]="chatService.at_users[i].avatar">
+                    <div>{{chatService.at_users[i].user_name}}</div>
+                </div>
+            </div>
+
+        </div>
+
+        <!------------------------------------------------------------------Emoji-->
+        <div class="z_index" (click)="genFunctService.stopPropagation($event)" >
+            <emoji-mart [class.d_block]="emojiPicker_open && picker_index == -2" class="emoji_picker"
+                [class.emoji_picker_above]="show_picker_above" (emojiClick)="addEmojitoTextarea($event)"></emoji-mart>
+        </div>
+
+        <!------------------------------------------------------------------TextField-->
+
+        <textarea #messageTextarea type="text" [(ngModel)]="comment_value" (keyup.enter)="postComment()"
+            (keydown)="handleEnter($event)" (ngModelChange)="textChanged($event)" placeholder="Antworten..."></textarea>
+        <div class="icons_main">
+            <div class="icons">
+                <div class="plus" (click)="openAttachmentMenu()" (click)="genFunctService.stopPropagation($event)">
+                    <div class="hover"><img src="/assets/img/icons/add.png" alt=""></div>
+                </div>
+                <div class="hover"><img src="/assets/img/icons/sentiment_satisfied.png"
+                        (click)="openEmojiPicker(-2, 'textarea')" (click)="genFunctService.stopPropagation($event)">
+                </div>
+                <div class="hover"><img src="/assets/img/icons/alternate_email.png" (click)="openUsers()"
+                        (click)="genFunctService.stopPropagation($event)"></div>
+            </div>
+        </div>
+        <img [class.inactive]="comment_value.length == '' && uploadService.upload_array.file_name.length == 0"
+            class="send_button" src="/assets/img/icons/send (1).png" (click)="postComment()">
+    </div>
+</div>

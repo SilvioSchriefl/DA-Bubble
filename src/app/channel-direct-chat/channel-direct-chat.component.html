@@ -1,0 +1,7 @@
+<app-header-channel-direct-chat></app-header-channel-direct-chat>
+
+<app-chat-messages *ngIf="chatService.currentChatID !== 'noChatSelected'"></app-chat-messages>
+<app-chat-placeholder *ngIf="chatService.currentChatID === 'noChatSelected'"></app-chat-placeholder>
+
+<app-channel-direct-send-message *ngIf="!msgService.editMessageText"></app-channel-direct-send-message>
+<app-channel-direct-edit-message *ngIf="msgService.editMessageText"></app-channel-direct-edit-message>

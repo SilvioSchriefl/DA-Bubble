@@ -1,0 +1,16 @@
+<section class="p-20">
+    <div class="title">
+        <h1>Mitglieder</h1>
+        <mat-icon mat-button mat-dialog-close class="close-dialog">close</mat-icon>
+    </div>
+    <div class="channel-members">
+        <div *ngFor="let assignedUser of channelService.currentChannelData.assignedUsers;" (click)="profileService.openProfile(assignedUser)">
+            <img [src]="authService.getImageUrl(assignedUser)">
+            <span>{{authService.getUserInfo(assignedUser)?.user_name}}{{ authService.isCurrentUser(assignedUser) ? ' (Du)' : '' }}</span>
+        </div>
+    </div>
+    <div *ngIf="chatService.currentChatData.channel_ID != 'RRraQrPndWV95cqAWCZR'" class="add-members" (click)="closeRedirectAddMember()">
+        <mat-icon >person_add_alt</mat-icon>
+        <span>Mitglieder hinzufügen</span>
+    </div>
+</section>

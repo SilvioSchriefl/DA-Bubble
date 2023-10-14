@@ -1,0 +1,100 @@
+.dialog-container {
+    display: flex;
+    flex-direction: column;
+    width: 872px;
+    height: 539px;
+    background-color: white;
+    border-radius: 30px !important;
+    padding: 40px;
+    gap: 30px;
+
+    .head-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+
+        span {
+            font-size: 26px !important;
+            font-weight: 700;
+        }
+    }
+
+    p {
+        font-size: 18px;
+    }
+
+    span {
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        border-radius: 40px;
+        border: 1px solid #ADB0D9;
+        padding: 20px 45px;
+        font-size: 18px;
+        box-sizing: border-box;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
+
+        #channel-input {
+            position: relative;
+
+            img {
+                position: absolute;
+                height: 15px;
+                left: 20px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+
+            input {
+                padding: 20px 50px;
+            }
+        }
+
+        #optional-input {
+            padding: 20px 30px;
+        }
+
+        button {
+            align-self: flex-end;
+        }
+    }
+}
+
+.error {
+    position: absolute;
+    left: 0;
+    bottom: -20px;
+    color: red;
+    font-size: 14px !important;
+}
+
+.close-menu {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    border-radius: 100%;
+    cursor: pointer;
+    transition: 200ms;
+
+    &:hover {
+        background-color: #ECEEFE;
+    }
+}
+
+@media (max-width: 1000px) {
+    .dialog-container {
+        height: 100vh !important;
+        width: unset !important;
+    }
+}

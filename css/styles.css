@@ -1,0 +1,15 @@
+body {
+  margin: 0;
+  font-family: "Nunito", sans-serif !important;
+  background-color: #ECEEFE;
+  overflow-x: hidden;
+}
+
+.d_none {
+  display: none !important;
+}
+
+html,
+body {
+  height: 100%;
+}/*# sourceMappingURL=styles.css.map */

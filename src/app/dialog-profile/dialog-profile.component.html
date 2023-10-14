@@ -1,0 +1,32 @@
+<div id="profileDetails">
+    <div class="header-container">
+        <span>Profil</span>
+        <mat-icon class="close-dialog" (click)="close()" mat-button mat-dialog-close>close</mat-icon>
+    </div>
+    <img class="profileImg" [src]="authService.getImageUrl(data.user.uid)">
+    <div class="middle-part">
+        <div class="edit-container">
+            <span id="name">{{ data.user.user_name}}</span>
+        </div>
+        <div class="status">
+            <svg [ngClass]="{'offline': data.user.status === 'Abwesend'}" width="16" height="17" viewBox="0 0 16 17"
+                fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8" cy="8.5" r="8" fill="#92C83E" />
+            </svg>
+            <span [ngClass]="{'offline': data.user.status === 'Abwesend'}"> {{ data.user.status
+                }}</span>
+        </div>
+    </div>
+    <div *ngIf="data.user.email != 'gast@gast.de'" class="email-container">
+        <div>
+            <img src="assets/img/mail.png" alt="">
+            <span id="email-headline">E-Mail-Adresse</span>
+        </div>
+
+        <a id="email-address" href="mailto:{{ data.user.email }}">{{ data.user.email }}</a>
+    </div>
+    <div *ngIf="data.user.email != 'gast@gast.de'" id="msg-btn" (click)="sendMsg(data.user.uid, data.user.user_name)">
+        <img src="assets/img/icons/msg_icon.svg" alt="">
+        <span>Nachricht</span>
+    </div>
+</div>

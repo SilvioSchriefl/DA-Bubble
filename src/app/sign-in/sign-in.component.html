@@ -1,0 +1,38 @@
+<div class="signin_div">
+    <span class="headline">Anmeldung</span>
+    <p>Wir empfehlen dir, die E-Mail-Adresse zu nutzen, die du bei der Arbeit verwendest.</p>
+    <div class="input_div">
+        <img class="input_img" src="/assets/img/mail.png" alt="">
+        <input type="email" placeholder="beispielname@email.com" (focus)="emailFocus = true" [(ngModel)]="email"
+            (ngModelChange)="dataChanged($event)">
+        <span class="error" *ngIf="!emailError && emailFocus">Diese E-Mail-Adresse ist leider ungültig.</span>
+    </div>
+    <div class="input_div">
+        <img class="input_img_2" src="/assets/img/lock.png">
+        <input type="password" placeholder="Passwort" [(ngModel)]="password">
+    </div>
+    <div class="forgot_pw" [routerLink]="['/forgot-pw']" routerLinkActive="router-link-active">Passwort vergessen?</div>
+    <div class="or">
+        <img src="/assets/img/line.png" alt="">
+        <span>ODER</span>
+        <img src="/assets/img/line.png" alt="">
+    </div>
+    <div class="google_button" (click)="signIn()">
+        <img src="/assets/img/Google.png" alt="">
+        <span>Anmelden mit Google</span>
+    </div>
+    <div class="button_div_sign_in">
+        <div [class.invalid]="password.length < 8 || !emailError" (click)="signInWithPassword()" class="signin_button">
+            Anmelden</div>
+        <div (click)="guestLogin()" class="guest_login_button">Gäste-Login</div>
+    </div>
+</div>
+<div class="imprint">
+    <span [routerLink]="['/imprint']">Impressum</span>
+    <span [routerLink]="['/data']">Datenschutz</span>
+</div>
+
+<div [class.show_sign_in_successful]="authenticationService.signIn_successful" class="login_success"><span>Hallo
+        {{authenticationService.userData?.user_name}}</span></div>
+<div [class.show_error]="authenticationService.signIn_error" class="login_error">Passwort oder Email falsch</div>
+<div [class.show_shadow]="authenticationService.signIn_successful" class="white_shadow"></div>

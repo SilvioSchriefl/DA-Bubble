@@ -1,0 +1,31 @@
+<section class="edit-message-container">
+    <div class="edit-message">
+        <textarea name="" id="" cols="10" rows="2" [(ngModel)]="msgService.messageText"
+            (keydown)="msgService.checkIfEmpty()" (keyup)="msgService.checkIfEmpty()"
+            (keyup.enter)="msgService.saveEditedMessage()"></textarea>
+        <div class="extend-send-message">
+            <div class="extend-message">
+                <div class="z_index emojiPickerMessageEdit">
+                    <emoji-mart [class.d_flex]="emojiService.emojiPicker_open && emojiService.picker_index == -2"
+                        class="emoji_picker" (emojiClick)="addEmojitoTextarea($event);">
+                    </emoji-mart>
+                    <mat-icon (click)="toggleEmojiPicker(); emojiService.openEmojiPicker(-2);">mood</mat-icon>
+                </div>
+            </div>
+            <div class="edit-message-buttons">
+                <button class="cancel-edit-message"
+                    (click)="msgService.editMessageText = false; msgService.messageText = '';">
+                    Abbrechen
+                </button>
+                <button class="save-edit-message" [ngClass]="{'ready-to-save': msgService.readyToSend }"
+                    [disabled]="!msgService.readyToSend" (click)="msgService.saveEditedMessage()">
+                    Speichern
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="img-user">
+        <img [src]="authService.getImageUrl(authService.getUid())">
+    </div>
+
+</section>

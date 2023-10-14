@@ -1,0 +1,38 @@
+<header [ngClass]="{'placeholder':chatService.currentChatSection === 'noChatSectionSelected'}">
+    <div #editChannelRef *ngIf="chatService.currentChatSection === 'channels'" class="chat-receiver"
+        [ngClass]="{'edit-dialog-open':isEditChannelDialogOpen === true}" (click)="editChannel()" #editChannelREF>
+        <mat-icon class="tag">tag</mat-icon>
+        <h1>{{ channelService.currentChannelData.channelName }}</h1>
+        <mat-icon>keyboard_arrow_down</mat-icon>
+    </div>
+    <div *ngIf="chatService.currentChatSection === 'chats'" class="chat-receiver-directChat"
+        (click)="profileService.openProfile(chatService.getChatReceiverUser(chatService.currentChatData).uid)">
+        <img [src]="authService.getImageUrl(chatService.getChatReceiverUser(chatService.currentChatData).uid)"
+            alt="chat receiver image">
+        <h1>{{ chatService.getChatReceiverUser(chatService.currentChatData).user_name }}</h1>
+        <h1 *ngIf="chatService.currentChatData.chat_Member_IDs[0] === chatService.currentChatData.chat_Member_IDs[1]">
+            (Du)</h1>
+        <svg [ngClass]="{'offline': chatService.getChatReceiverUser(chatService.currentChatData).status === 'Abwesend'}"
+            width="13" height="14" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="8" cy="8.5" r="8" fill="#92C83E" />
+        </svg>
+    </div>
+    <div class="members" *ngIf="chatService.currentChatSection === 'channels'">
+        <div class="already-members" [ngClass]="{'edit-dialog-open':isEditMembersDialogOpen === true}"
+            (click)="editMembers()" #editMembersREF>
+            <div class="already-members-avatars">
+                <ng-container
+                    *ngFor="let assignedUser of channelService.currentChannelData.assignedUsers; let i = index;">
+                    <img *ngIf="i < 3" [src]="authService.getImageUrl(assignedUser)">
+                </ng-container>
+            </div>
+            <span>{{ channelService.currentChannelData.assignedUsers.length }}</span>
+        </div>
+        <div *ngIf="chatService.currentChatData.channel_ID != 'RRraQrPndWV95cqAWCZR'" (click)="addMembers()"
+            class="add-members" #addMembersREF>
+            <mat-icon [ngClass]="{'edit-dialog-open':isAddMembersDialogOpen === true}">
+                person_add_alt
+            </mat-icon>
+        </div>
+    </div>
+</header>

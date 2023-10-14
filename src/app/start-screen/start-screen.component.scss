@@ -1,0 +1,221 @@
+.start_background {
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(1.46deg, #313ae6 1.22%, #797ef3 98.76%);
+  width: 100%;
+  height: 100%;
+  transition: 1s;
+}
+
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  padding: 0 25px 0 25px;
+}
+
+.logo {
+  z-index: 2;
+  display: flex;
+  position: absolute;
+  top: calc(50% - 92px);
+  left: calc(50% - 155px);
+  color: white;
+  font-size: 100px;
+  font-weight: 600;
+  transition: 700ms;
+
+  img {
+    height: 184px;
+  }
+}
+
+.logo2 {
+  opacity: 0;
+  z-index: -1;
+  display: flex;
+  position: absolute;
+  top: 75px;
+  left: 75px;
+  align-items: center;
+  font-size: 24px;
+  gap: 16px;
+  font-weight: 600;
+
+  img {
+    width: 70px;
+  }
+}
+
+.logo_text {
+  width: 550px;
+  overflow-x: hidden;
+  position: relative;
+
+  span {
+    transition: 700ms;
+    position: absolute;
+    top: 24px;
+    transform: translateX(-100%);
+  }
+}
+
+.sign_in {
+  display: flex;
+  flex-direction: column;
+  font-size: 18px;
+  position: absolute;
+  right: 75px;
+  top: 75px;
+  z-index: 1;
+}
+
+.create_text {
+  border-radius: 15px;
+  border: 1px solid transparent;
+  transition: 200ms;
+  box-sizing: border-box;
+  margin-top: 3px;
+  z-index: 2;
+  color: #797ef3;
+  font-size: 18px;
+  height: 42px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    cursor: pointer;
+    border: 1px solid #686868;
+  }
+}
+
+.slide_img {
+  transform: translateX(-200px);
+}
+
+.slide_text {
+  transform: translateX(10%) !important;
+}
+
+.slide_logo {
+  animation: slidelogo_out 1s;
+}
+
+.slide_logo2 {
+  z-index: 1;
+  opacity: 1;
+  animation: slidelogo_in 1s;
+}
+
+.opacity {
+  opacity: 0;
+}
+
+.main_div {
+  background: #eceefe;
+  height: 100vh;
+  width: 100%;
+}
+
+@keyframes slidelogo_out {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 50px;
+    left: 50px;
+    scale: 0.5;
+    opacity: 0;
+  }
+}
+
+@keyframes slidelogo_out_mobile {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes slidelogo_in {
+  0% {
+    opacity: 0;
+    scale: 2;
+    top: 50%;
+    left: 50%;
+  }
+
+  100% {
+    top: 75px;
+    left: 75px;
+    opacity: 1;
+    scale: 1;
+  }
+}
+
+@keyframes slidelogo_in_mobile {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .logo {
+    top: calc(50% - 46px);
+    left: calc(50% + 46px);
+    font-size: 40px;
+    img {
+      height: 80px;
+    }
+  }
+
+  .logo_text {
+    span {
+      top: 15px;
+    }
+  }
+}
+
+@media screen and (max-width: 570px) {
+  .main_div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .sign_in {
+    position: unset;
+    margin-bottom: 50px;
+  }
+
+  .logo2 {
+    margin-top: 50px;
+    position: unset;
+    img {
+      width: 50px;
+    }
+  }
+
+  .slide_logo2 {
+    z-index: 1;
+    animation: slidelogo_in_mobile 3s;
+  }
+}
+
+@media screen and (max-height: 860px) {
+  .sign_in {
+    margin-bottom: 25px;
+  }
+}

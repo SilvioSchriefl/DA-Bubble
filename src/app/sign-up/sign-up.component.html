@@ -1,0 +1,40 @@
+<div class="signup_div">
+    <div class="arrow_back" [routerLink]="['/sign-in']" routerLinkActive="router-link-active">
+        <img src="/assets/img/arrow_back.png" alt="">
+    </div>
+    <div class="headline">Konto erstellen</div>
+    <span>Mit deinem Namen und deiner E-Mail-Adresse hast du dein neues DABubble-Konto.</span>
+    <div class="input_div">
+        <img class="input_img_2" src="/assets/img/person_filled.png" alt="">
+        <input placeholder="Name" type="text" #myInput (focus)="nameFocus = true" [(ngModel)]="name"
+            (ngModelChange)="dataChanged($event, 'name')">
+        <span class="error" *ngIf="name.length < 3 && nameFocus">Bitte schreiben Sie einen Namen.</span>
+    </div>
+    <div class="input_div">
+        <img class="input_img" src="/assets/img/mail.png" alt="" #email_input>
+        <input placeholder="beispielname@email.com" type="email" (focus)="emailFocus = true"
+            [(ngModel)]="email" (ngModelChange)="dataChanged($event, 'email')">
+        <span class="error" *ngIf="!emailError && emailFocus">Diese E-Mail-Adresse ist leider ungültig.</span>
+    </div>
+    <div class="input_div">
+        <img class="input_img_2" src="/assets/img/lock.png" alt="" #userPassword>
+        <input placeholder="Passwort" type="password" #myInput (focus)="passwordFocus = true" [(ngModel)]="password"
+            (ngModelChange)="dataChanged($event, 'password')">
+        <div class="error">
+            <span *ngIf="!hasValidLength() && passwordFocus">8-32 Zeichen</span>
+            <span *ngIf="!hasSpecialChr() && passwordFocus">Sonderzeichen</span>
+            <span *ngIf="!hasNumber() && passwordFocus">Zahl</span>
+            <span *ngIf="!hasUppercase() && passwordFocus">Großbuchstabe</span>
+        </div>
+    </div>
+    <div class="input_div">
+        <img class="input_img_2" src="/assets/img/lock.png" alt="" #userPassword>
+        <input placeholder="Passwort wiederholen" type="password" #myInput (focus)="match = true"
+            [(ngModel)]="matchPassword" (ngModelChange)="dataChanged($event, 'passwordMatch')">
+        <span class="error" *ngIf="!passwordConfirmed && match">Passwort stimmt nicht überein</span>
+    </div>
+    <div [class.invalid]="!formValid" class="go_on" (click)="signUp()">Weiter</div>
+</div>
+<div [class.show_error]="authenticationService.email_error" class="email_error">Email bereits regestriert</div>
+<div [class.show_signup_success]="authenticationService.signUp_successful" class="signup_success">Konto erfolgreich erstellt</div>
+<div [class.show_shadow]="authenticationService.signUp_successful" class="white_shadow"></div>
