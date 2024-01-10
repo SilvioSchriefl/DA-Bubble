@@ -21,6 +21,8 @@ export class NewPasswordComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private afAuth: AngularFireAuth) { }
 
+  /**
+   * Initializes the component and subscribes to the query parameters of the route. */
   ngOnInit() {
     this.route.queryParams.subscribe((params: Params) => {
       this.code = params['oobCode'];
@@ -35,6 +37,12 @@ export class NewPasswordComponent implements OnInit {
   }
 
 
+  /**
+   * Updates the data based on the given value and password.
+   *
+   * @param {string} value - The new value.
+   * @param {string} pw - The password for validation.
+   */
   dataChanged(value: string, pw: string) {
     if (pw == 'pw1') this.password = value
     if (pw == 'pw2') this.password_2 = value
@@ -42,22 +50,42 @@ export class NewPasswordComponent implements OnInit {
   }
 
 
-  hasNumber() {
+  /**
+   * Checks if the password contains a number.
+   *
+   * @return {boolean} true if the password contains a number, false otherwise
+   */
+  hasNumber(): boolean {
     return /[0-9]/.test(this.password);
   }
 
 
-  hasSpecialChr() {
+  /**
+   * Checks if the password contains any special characters.
+   *
+   * @return {boolean} True if the password contains special characters, false otherwise.
+   */
+  hasSpecialChr(): boolean {
     return /[*.!@$%^&(){}[\]:;<>,.?/~_+\-=|\\]/.test(this.password);
   }
 
 
-  hasValidLength() {
+  /**
+   * Checks if the password has a valid length.
+   *
+   * @return {boolean} Returns true if the password has a length between 8 and 32 characters, false otherwise.
+   */
+  hasValidLength(): boolean {
     return /^.{8,32}$/.test(this.password);
   }
 
 
-  hasUppercase() {
+  /**
+   * Check if the password contains an uppercase letter.
+   *
+   * @return {boolean} True if the password has at least one uppercase letter, false otherwise.
+   */
+  hasUppercase(): boolean {
     return /[A-Z]/.test(this.password);
   }
 

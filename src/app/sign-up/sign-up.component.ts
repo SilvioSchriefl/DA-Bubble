@@ -37,22 +37,42 @@ export class SignUpComponent {
   }
 
 
-  hasNumber() {
+  /**
+   * Check if the password contains a number.
+   *
+   * @return {boolean} true if the password contains a number, false otherwise.
+   */
+  hasNumber(): boolean {
     return /[0-9]/.test(this.password);
   }
 
 
-  hasSpecialChr() {
+  /**
+   * Checks if the password contains any special characters.
+   *
+   * @return {boolean} Returns true if the password contains special characters, false otherwise.
+   */
+  hasSpecialChr(): boolean {
     return /[*.!@$%^&(){}[\]:;<>,.?/~_+\-=|\\]/.test(this.password);
   }
 
 
-  hasValidLength() {
+  /**
+   * Checks if the password has a valid length.
+   *
+   * @return {boolean} Returns true if the password has a valid length, otherwise false.
+   */
+  hasValidLength(): boolean {
     return /^.{8,32}$/.test(this.password);
   }
 
 
-  hasUppercase() {
+  /**
+   * Checks if the password contains an uppercase letter.
+   *
+   * @return {boolean} True if the password contains an uppercase letter, false otherwise.
+   */
+  hasUppercase(): boolean {
     return /[A-Z]/.test(this.password);
   }
 
@@ -62,7 +82,11 @@ export class SignUpComponent {
    */
   validateForm() {
     if (this.password === this.matchPassword) this.passwordConfirmed = true
+    else this.passwordConfirmed = false
     if (this.hasNumber() && this.hasSpecialChr() && this.hasValidLength() && this.hasUppercase() && this.name.length > 2 && this.emailError && this.passwordConfirmed) this.formValid = true
+    else this.formValid = false
+    console.log(this.passwordConfirmed, this.matchPassword, this.password);
+    
   }
 
 
