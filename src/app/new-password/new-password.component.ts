@@ -18,6 +18,8 @@ export class NewPasswordComponent implements OnInit {
   code: string
   codeVerified: boolean;
   resetFailed: boolean = false;
+  resetSuccess: boolean = false;
+  loading: boolean = false;
 
   constructor(private route: ActivatedRoute, private afAuth: AngularFireAuth) { }
 
@@ -29,9 +31,11 @@ export class NewPasswordComponent implements OnInit {
       this.afAuth.verifyPasswordResetCode(this.code)
         .then(email => {
           this.codeVerified = true;
+          console.log('Code verified:', email);  
         })
         .catch(error => {
-          console.log(error);
+          console.error;
+          console.log('Code not verified:', error); 
         })
     })
   }
@@ -105,13 +109,16 @@ export class NewPasswordComponent implements OnInit {
    */
   resetPassword() {
     if (!this.formValid) return;
+    this.loading = true;
     this.afAuth.confirmPasswordReset(this.code, this.password)
       .then(resp => {
-        console.log(resp);
+        this.resetSuccess = true;
+        this.loading = false;
       })
       .catch(error => {
-        console.log(error);
+        console.error;
         this.resetFailed = true;
+        this.loading = false;
       });
   }
 }

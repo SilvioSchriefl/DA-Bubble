@@ -59,9 +59,9 @@ export class OpenChatService {
   * Additionally, ensures the chat section is appropriately displayed.
   */
   async getCurrentData() {
-    this.chatService.getCurrentChatData();
+     this.chatService.getCurrentChatData();
     this.chatService.textAreaMessageTo();
-    if (this.chatService.currentChatSection == 'channels') this.channelService.loadCurrentChannel();
+    if (this.chatService.currentChatSection == 'channels')  this.channelService.loadCurrentChannel();
     this.msgService.getMessages().then(() => {
       this.chatService.thread_open = false;
       this.msgService.scrollToBottom('channel')

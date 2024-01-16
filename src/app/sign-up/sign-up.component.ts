@@ -29,6 +29,12 @@ export class SignUpComponent {
   ) { }
 
 
+  /**
+   * A description of the entire function.
+   *
+   * @param {any} value - the value to be checked
+   * @param {string} inputfield - the input field to be validated
+   */
   dataChanged(value: any, inputfield: string) {
     if (inputfield == 'email') {
       this.emailError = this.regexEmail.test(value)
@@ -84,9 +90,7 @@ export class SignUpComponent {
     if (this.password === this.matchPassword) this.passwordConfirmed = true
     else this.passwordConfirmed = false
     if (this.hasNumber() && this.hasSpecialChr() && this.hasValidLength() && this.hasUppercase() && this.name.length > 2 && this.emailError && this.passwordConfirmed) this.formValid = true
-    else this.formValid = false
-    console.log(this.passwordConfirmed, this.matchPassword, this.password);
-    
+    else this.formValid = false    
   }
 
 

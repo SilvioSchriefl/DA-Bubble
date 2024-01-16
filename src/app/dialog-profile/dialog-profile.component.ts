@@ -5,6 +5,8 @@ import { ChatService } from 'services/chat.service';
 import { MessagesService } from 'services/messages.service';
 import { FirestoreThreadDataService } from 'services/firestore-thread-data.service';
 import { ChannelService } from 'services/channel.service';
+import { publishFacade } from '@angular/compiler';
+import { OpenChatService } from 'services/open-chat.service';
 
 @Component({
   selector: 'app-dialog-profile',
@@ -20,7 +22,8 @@ export class DialogProfileComponent {
     public chatService: ChatService,
     public msgService: MessagesService,
     public fsDataThreadService: FirestoreThreadDataService,
-    public channelService: ChannelService
+    public channelService: ChannelService,
+    public openChatService: OpenChatService 
   ) { }
 
 
@@ -32,7 +35,7 @@ export class DialogProfileComponent {
   */
   async sendMsg(user_id: string, user_name: string) {
     this.setReceiverData(user_id, user_name);
-    this.findChatWithUser(this.chatService.currentUser_id, this.chatService.userReceiverID);
+    await this.findChatWithUser(this.chatService.currentUser_id, this.chatService.userReceiverID);
     this.chatService.directedFromProfileButton = true;
     this.close();
   }
@@ -53,7 +56,7 @@ export class DialogProfileComponent {
         return;
       }
     }
-    this.createNewChat();
+    await this.createNewChat();
   }
 
 
@@ -81,6 +84,9 @@ export class DialogProfileComponent {
     this.chatService.currentChatData = await this.chatService.getChatDocument();
     this.chatService.textAreaMessageTo();
     this.msgService.getMessages();
+    console.log(this.chatService.currentChatData);
+    this.openChat(this.chatService.currentChatData.chat_ID);
+    
   }
 
 

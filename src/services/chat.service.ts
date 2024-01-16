@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { doc, getFirestore, collection, getDocs, getDoc, onSnapshot, setDoc } from '@angular/fire/firestore';
+import { doc, getFirestore, collection, getDocs, getDoc, onSnapshot, setDoc, DocumentData } from '@angular/fire/firestore';
 import { AuthenticationService } from './authentication.service';
 import { ChannelService } from './channel.service';
 import { GeneralFunctionsService } from './general-functions.service';
@@ -14,7 +14,7 @@ export class ChatService {
   currentChatSection = 'noChatSectionSelected';
   currentChatID: string = 'noChatSelected';
   directChatMessages = [];
-  currentChatData;
+  currentChatData: DocumentData;
   messageToPlaceholder: string = 'Nachricht an ...';
   chats: any[] = [];
   currentUser_id: string
@@ -51,7 +51,7 @@ export class ChatService {
   }
 
 
-  isUserChat(chatData) {
+  isUserChat(chatData: DocumentData) {
     return chatData.chat_Member_IDs.includes(this.currentUser_id);
   }
 

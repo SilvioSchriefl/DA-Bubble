@@ -29,6 +29,7 @@ export class ChannelSidebarComponent implements OnInit, OnDestroy {
   private newChannelIdSubscription: Subscription;
   currentChannelId: string;
 
+
   constructor(
     public authService: AuthenticationService,
     public dialog: MatDialog,
@@ -61,12 +62,14 @@ export class ChannelSidebarComponent implements OnInit, OnDestroy {
     this.sortedChats = this.sortChats(this.chatService.chats);
   }
 
+
   /**
   * Cleanup method for the component. Unsubscribes from the new channel ID.
   */
   ngOnDestroy() {
     if (this.newChannelIdSubscription) this.newChannelIdSubscription.unsubscribe();
   }
+
 
   /**
   * Loads the start channel for new users, checks for uploads, and sets the join message.
@@ -93,6 +96,7 @@ export class ChannelSidebarComponent implements OnInit, OnDestroy {
     this.toggleNewMsgComponent();
   }
 
+
   /**
   * Opens the add channel dialog and handles its close event.
   */
@@ -106,6 +110,7 @@ export class ChannelSidebarComponent implements OnInit, OnDestroy {
     });
   }
 
+
   /**
   * Checks the screen width and updates the mobile logo state accordingly.
   */
@@ -115,12 +120,14 @@ export class ChannelSidebarComponent implements OnInit, OnDestroy {
     }
   }
 
+
   /**
   * Toggles the visibility of the new message component.
   */
   toggleNewMsgComponent() {
     this.chatService.openNewMsgComponent = !this.chatService.openNewMsgComponent;
   }
+
 
   /**
     * Toggles the visibility of the channels.
@@ -129,6 +136,7 @@ export class ChannelSidebarComponent implements OnInit, OnDestroy {
     this.channelsVisible = !this.channelsVisible;
   }
 
+
   /**
    * Toggles the visibility of direct messages.
    */
@@ -136,14 +144,16 @@ export class ChannelSidebarComponent implements OnInit, OnDestroy {
     this.dmsVisible = !this.dmsVisible;
   }
 
+
   /**
   * Compares the current chat ID with the receiver's ID to determine if they're different.
   * @param {string} userReceiverID - User receiver's ID.
   * @return {boolean} - Whether the current chat ID is different from the user receiver's ID.
   */
-  checkIfSameChatID(userReceiverID: string) {
+  checkIfSameChatID(userReceiverID: string): boolean {
     return this.chatService.currentChatID !== userReceiverID;
   }
+
 
   /**
    * Determines if a chat is associated with the current user.
@@ -153,6 +163,7 @@ export class ChannelSidebarComponent implements OnInit, OnDestroy {
   isCurrentUserChat(chat: { chat_Member_IDs: any[]; }): boolean {
     return chat.chat_Member_IDs[0] === chat.chat_Member_IDs[1] ? true : false;
   }
+  
 
   /**
    * Sorts an array of chats to place the chat associated with the current user at the beginning.
