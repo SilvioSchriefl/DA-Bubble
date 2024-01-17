@@ -84,9 +84,7 @@ export class DialogProfileComponent {
     this.chatService.currentChatData = await this.chatService.getChatDocument();
     this.chatService.textAreaMessageTo();
     this.msgService.getMessages();
-    console.log(this.chatService.currentChatData);
     this.openChat(this.chatService.currentChatData.chat_ID);
-    
   }
 
 

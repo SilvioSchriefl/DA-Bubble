@@ -55,7 +55,7 @@ export class ChannelSidebarComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     await this.authService.waitUntilAuthInitialized();
     this.chatService.currentUser_id = this.auth.currentUser.uid
-    await this.authService.usersPromise;
+     await this.authService.usersPromise;
     await this.chatService.loadChats();
     await this.chatService.initOwnChat();
     if (this.authService.newUser) this.addNewUserMessageToChannel()

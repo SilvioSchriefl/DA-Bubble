@@ -23,7 +23,7 @@ export class OpenChatService {
   * @param {string} [chatSection='chats'] - The section in which the chat belongs. Defaults to 'chats'.
   */
   async openChat(id: string, chatSection: string = 'chats') {
-    this.ensureChatSectionVisible();
+      this.ensureChatSectionVisible();
     if (this.chatService.currentChatID !== id) {
       this.chatService.currentChatSection = chatSection;
       this.setCurrentID(id);
@@ -60,8 +60,8 @@ export class OpenChatService {
   */
   async getCurrentData() {
      this.chatService.getCurrentChatData();
-    this.chatService.textAreaMessageTo();
-    if (this.chatService.currentChatSection == 'channels')  this.channelService.loadCurrentChannel();
+     this.chatService.textAreaMessageTo();
+    if (this.chatService.currentChatSection == 'channels') this.channelService.loadCurrentChannel();
     this.msgService.getMessages().then(() => {
       this.chatService.thread_open = false;
       this.msgService.scrollToBottom('channel')

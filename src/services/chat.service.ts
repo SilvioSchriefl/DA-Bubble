@@ -145,8 +145,8 @@ export class ChatService {
   }
 
 
-  getChatReceiverUser(chat) {
-    let chatReveiverID;
+  getChatReceiverUser(chat: DocumentData) {
+    let chatReveiverID: string;
     try {
       if (!chat || chat.channelName) return null;
       if (chat.chat_Member_IDs[0] !== this.currentUser_id) chatReveiverID = chat.chat_Member_IDs[0];
