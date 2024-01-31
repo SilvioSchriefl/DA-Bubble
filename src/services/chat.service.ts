@@ -3,6 +3,7 @@ import { doc, getFirestore, collection, getDocs, getDoc, onSnapshot, setDoc, Doc
 import { AuthenticationService } from './authentication.service';
 import { ChannelService } from './channel.service';
 import { GeneralFunctionsService } from './general-functions.service';
+import { User } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +36,11 @@ export class ChatService {
   ) { }
 
 
+  /**
+   * Asynchronously loads chats from the database and updates the local chats array.
+   *
+   * @return {Promise<void>} A Promise that resolves when the chats are loaded
+   */
   async loadChats(): Promise<void> {
     return new Promise<void>((resolve) => {
       this.chats = [];
@@ -51,12 +57,23 @@ export class ChatService {
   }
 
 
-  isUserChat(chatData: DocumentData) {
+  /**
+   * Check if the user is part of the chat.
+   *
+   * @param {DocumentData} chatData - the chat data to be checked
+   * @return {boolean} true if the user is part of the chat, false otherwise
+   */
+  isUserChat(chatData: DocumentData): boolean {
     return chatData.chat_Member_IDs.includes(this.currentUser_id);
   }
 
 
-  async initOwnChat() {
+  /**
+   * Initializes own chat for the current user.
+   *
+   * @return {Promise<void>} 
+   */
+  async initOwnChat(): Promise<void> {
     const userID = this.currentUser_id;
     let chatExists = false;
     if (this.chats.length != 0) {
@@ -70,7 +87,13 @@ export class ChatService {
   }
 
 
-  async searchChat(userReceiverID): Promise<string | null> {
+  /**
+   * Asynchronously searches for a chat using the user receiver ID.
+   *
+   * @param {string} userReceiverID - the ID of the user receiving the chat
+   * @return {Promise<string | null>} the ID of the found chat, or null if not found
+   */
+  async searchChat(userReceiverID: string): Promise<string | null> {
     let foundChatId = null;
     if (this.authService.getUid() !== null) {
       try {
@@ -85,20 +108,33 @@ export class ChatService {
       } catch (error) {
         console.error("Fehler bei der Suche nach einem Chat: ", error);
       }
-    } else {
-      console.error("Kein Benutzer ist eingeloggt");
-    }
+    } else console.error("Kein Benutzer ist eingeloggt");
     return null;
   }
+  
 
-  exactChatMemberIDs(chatData, userReceiverID) {
+
+  /**
+   * Checks if the given userReceiverID is an exact chat member
+   *
+   * @param {DocumentData} chatData - the chat data containing member IDs
+   * @param {string} userReceiverID - the ID of the user to check
+   * @return {boolean} true if the userReceiverID is an exact chat member, false otherwise
+   */
+  exactChatMemberIDs(chatData: DocumentData, userReceiverID: string): boolean {
     const sortedMemberIDs = chatData.chat_Member_IDs.slice().sort();
     return (sortedMemberIDs[0] === userReceiverID && sortedMemberIDs[1] === this.authService.getUid()) ||
       (sortedMemberIDs[1] === userReceiverID && sortedMemberIDs[0] === this.authService.getUid());
   }
 
 
-  async getChatDocument() {
+  /**
+   * Retrieves the chat document from the database if the current chat ID is set,
+   * otherwise returns null.
+   *
+   * @return {object | null} The chat document data if it exists, otherwise null
+   */
+  async getChatDocument(): Promise<object> {
     if (this.currentChatID) {
       const docRef = doc(this.db, 'chats', this.currentChatID);
       const docSnap = await getDoc(docRef);
@@ -113,6 +149,13 @@ export class ChatService {
   }
 
 
+  /**
+   * Creates a new chat for the user with the given receiver ID.
+   *
+   * @param {string} userReceiverID - the ID of the user who will receive the chat
+   * @return {Promise<string | null>} A promise that resolves with the custom chat ID
+   * if the chat is successfully created, or null if there is an error
+   */
   async newChat(userReceiverID: string): Promise<string | null> {
     const userID = this.currentUser_id;
     this.directChatMessages = [];
@@ -134,6 +177,9 @@ export class ChatService {
   }
 
 
+  /**
+   * Set the messageToPlaceholder based on the current chat section.
+   */
   textAreaMessageTo() {
     if (this.currentChatSection === 'chats') {
       this.messageToPlaceholder = 'Nachricht an ' + this.getChatReceiverUser(this.currentChatData).user_name;
@@ -159,6 +205,9 @@ export class ChatService {
   }
 
 
+  /**
+   * Retrieves the current chat data based on the current chat section and ID.
+   */
   getCurrentChatData() {
     if (this.currentChatSection === 'channels') {
       this.currentChatData = this.channelService.channels.find(channel => channel.channel_ID === this.currentChatID);
@@ -166,10 +215,15 @@ export class ChatService {
       this.currentChatData = this.chats.find(chat => chat.chat_ID === this.currentChatID);
     }
   }
+  
 
-
-  //-----------------------------------------------------------------@user Funktionen----------------------------------------------------
-  modifyMessageValue(message: string) {
+  /**
+   * Modifies the message value by replacing any words starting with '@' with the corresponding user ID from authService.all_users.
+   *
+   * @param {string} message - the original message to be modified
+   * @return {string[]} the modified message as an array of words
+   */
+  modifyMessageValue(message: string): string[] {
     const words = message.split(' ')
     for (let i = 0; i < words.length; i++) {
       let word1 = words[i];
@@ -191,7 +245,13 @@ export class ChatService {
   }
 
 
-  textChanged(text: string) {
+  /**
+   * Handles the change of the input text and searches for users if the word starts with '@'.
+   *
+   * @param {string} text - the input text
+   * @return {string} the modified text after processing
+   */
+  textChanged(text: string): string {
     const words = text.split(' ');
     for (let i = 0; i < words.length; i++) {
       const word = words[i];
@@ -206,6 +266,11 @@ export class ChatService {
   }
 
 
+  /**
+   * Asynchronously search for a user by a specific letter in the user name.
+   *
+   * @param {string} word - the word to search for
+   */
   async searchUserByLetter(word: string) {
     this.open_users = true;
     const word_without_at = word.substring(1);
@@ -223,7 +288,14 @@ export class ChatService {
   }
 
 
-  addUserToTextarea(i: number, text: string) {
+  /**
+   * Adds the user's username to the textarea at a specific index.
+   *
+   * @param {number} i - the index of the user in the at_users array
+   * @param {string} text - the text to modify
+   * @return {string} the modified text with the added username
+   */
+  addUserToTextarea(i: number, text: string): string {
     const search_word = this.at_users[i].word;
     const words = text.split(' ');
     let index = words.indexOf(search_word);
@@ -234,7 +306,13 @@ export class ChatService {
   }
 
 
-  checkIfWordIsAnId(word: string) {
+  /**
+   * Checks if a word is an ID.
+   *
+   * @param {string} word - the word to be checked
+   * @return {boolean} true if the word is an ID, false otherwise
+   */
+  checkIfWordIsAnId(word: string): boolean {
     if (word.includes('\n')) word = word.replace(/\n/, '');
     const user = this.authService.all_users.find(element => element.uid === word);
     if (user) return true
@@ -242,19 +320,34 @@ export class ChatService {
   }
 
 
-  renameUid(word: string) {
+  /**
+   * A function that renames the user ID to the user's username.
+   *
+   * @param {string} word - the user ID to be renamed
+   * @return {string} the username if the user ID is found, otherwise the original user ID
+   */
+  renameUid(word: string): string {
     const user = this.authService.all_users.find(element => element.uid === word);
     if (user) return '@' + user.user_name
     else return word
   }
 
 
-  checkForBreak(word: string) {
+  /**
+   * Check if the input word contains a line break character.
+   *
+   * @param {string} word - the word to check for line break
+   * @return {boolean} true if the word contains a line break, false otherwise
+   */
+  checkForBreak(word: string): boolean {
     if (word.includes('\n')) return true
     else return false
   }
 
 
+  /**
+   * Toggles the sidebar visibility and updates the displayed text accordingly.
+   */
   toggleSidebar() {
     if (this.sidebarVisible) {
       this.sidebarVisible = false;
@@ -267,6 +360,11 @@ export class ChatService {
   }
 
 
+  /**
+   * Changes the text of the sidebar menu.
+   *
+   * @param {string} text - the new text for the sidebar menu
+   */
   changeText(text: string) {
     this.toggleSidebarMenuText = text;
   }

@@ -62,6 +62,11 @@ export class ThreadComponent implements OnInit {
   ) { }
 
 
+  /**
+   * Initializes the component with necessary event listeners and data retrieval.
+   *
+   * @return {Promise<void>} Promise that resolves when initialization is complete
+   */
   async ngOnInit(): Promise<void> {
     document.body.addEventListener('click', this.bodyClicked);
     this.fsDataThreadService.getMessages()
@@ -73,6 +78,11 @@ export class ThreadComponent implements OnInit {
 
 
 
+  /**
+   * Method called when the component is being destroyed.
+   *
+   * @return {void} 
+   */
   ngOnDestroy(): void {
     if (this.scrollSubscription) {
       this.scrollSubscription.unsubscribe();
@@ -80,6 +90,9 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Scrolls the div to the top using smooth behavior.
+   */
   scrollDivToTop() {
     const scrollContainerElement = this.scrollContainer.nativeElement;
     scrollContainerElement.scrollTo({
@@ -89,17 +102,31 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Scrolls the div to the bottom.
+   */
   scrollDivToBottom() {
     const scrollContainerElement = this.scrollContainer.nativeElement;
     scrollContainerElement.scrollTop = scrollContainerElement.scrollHeight;
   }
 
 
+  /**
+   * Closes a thread based on the given value.
+   *
+   * @param {boolean} value - the value to determine if the thread should be closed
+   */
   closeThread(value: boolean) {
     this.chatService.thread_open = false
   }
 
 
+  /**
+   * Open the emoji picker at a specific index and section.
+   *
+   * @param {number} i - the index of the emoji picker
+   * @param {string} section - the section where the emoji picker is being opened
+   */
   openEmojiPicker(i: number, section: string) {
     this.show_picker_above = false
     const textAreaRect = this.textarea.nativeElement.getBoundingClientRect();
@@ -118,6 +145,12 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Adds an emoji in the specified thread.
+   *
+   * @param {any} $event - the event triggering the emoji addition
+   * @param {number} i - the index of the thread
+   */
   addEmojiInThread($event: any, i: number) {
     let array = this.fsDataThreadService.comments
     let user = this.authService.userData.uid
@@ -127,6 +160,12 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Function to add or remove emoji in a thread.
+   *
+   * @param {number} i - index of the thread
+   * @param {number} j - index of the emoji
+   */
   addOrRemoveEmojIinThread(i: number, j: number) {
     this.fsDataThreadService.current_changed_index = i
     let array = this.fsDataThreadService.comments
@@ -148,13 +187,19 @@ export class ThreadComponent implements OnInit {
   };
 
 
+  /**
+   * Asynchronously posts a comment. It checks if there are uploaded files and 
+   * prepares them for upload. If the comment value is not empty and passes the 
+   * check, or there are uploaded files, it saves the thread, scrolls to the 
+   * bottom, sets the response based on the number of comments, and empties the 
+   * upload array after a delay.
+   *
+   */
   async postComment() {
     if (this.uploadService.upload_array.file_name.length > 0) await this.uploadService.prepareUploadfiles()
     if (this.comment_value.length > 0 && !this.checkComment(this.comment_value) || this.uploadService.upload_array.file_name.length > 0) {
-
       this.fsDataThreadService.saveThread(this.commentData()),
         this.msgService.scrollToBottom('thread')
-
       if (this.fsDataThreadService.comments?.length > 1) this.response = 'Antworten'
       if (this.fsDataThreadService.comments?.length < 2) this.response = 'Antwort'
       setTimeout(() => this.uploadService.emptyUploadArray(), 500);
@@ -162,7 +207,12 @@ export class ThreadComponent implements OnInit {
   }
 
 
-  commentData() {
+  /**
+   * Generates comment data including comment, modified comment, timestamp, UID, emoji data, text edited status, and uploaded files.
+   *
+   * @return {Object} comment_data - the generated comment data object
+   */
+  commentData(): object {
     let time_stamp = new Date()
     let comment_data = {
       comment: this.comment_value,
@@ -178,12 +228,23 @@ export class ThreadComponent implements OnInit {
   }
 
 
-  checkComment(text: string) {
+  /**
+   * Check the comment for any non-whitespace characters and return the result.
+   *
+   * @param {string} text - the input text to be checked
+   * @return {boolean} true if the input text contains only whitespace, false otherwise
+   */
+  checkComment(text: string): boolean {
     const cleanedStr = text.replace(/\s/g, '');
     return cleanedStr === '';
   }
 
 
+  /**
+   * addEmojitoTextarea function adds an emoji to the textarea.
+   *
+   * @param {any} $event - the event object
+   */
   addEmojitoTextarea($event: any) {
     let unicodeCode: string = $event.emoji.unified
     let emoji = String.fromCodePoint(parseInt(unicodeCode, 16));
@@ -191,6 +252,11 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Check if emoji exists in the message and update the count if found.
+   *
+   * @param {any} $event - the event object
+   */
   checkIfEmojiExistinMessage($event: any) {
     if (this.channel_message.emoji_data.length == 0) return
     this.channel_message.emoji_data.forEach(element => {
@@ -201,6 +267,11 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Adds an emoji to the message.
+   *
+   * @param {any} $event - the event triggering the addition of the emoji
+   */
   addEmojiToMessage($event: any) {
     this.emojiPicker_open = false
     this.emoji_exist = false
@@ -216,12 +287,22 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Open the edit comment menu.
+   *
+   * @param {number} i - the index of the comment to edit
+   */
   openEditCommentMenu(i: number) {
     this.edit_comment = true
     this.edit_comment_index = i
   }
 
 
+  /**
+   * Opens a dialog to edit a comment.
+   *
+   * @param {number} i - the index of the comment to edit
+   */
   openEditComment(i: number) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = 'edit_comment';
@@ -241,6 +322,10 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Opens the edit comment dialog and updates the chat message if the result is
+   * not null.
+   */
   openEditMessage() {
     this.edit_comment = false;
     const dialogRef = this.dialog.open(DialogEditCommentComponent, {
@@ -257,6 +342,11 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Open a dialog to delete a comment.
+   *
+   * @param {number} i - the index of the comment to be deleted
+   */
   openDeleteComment(i: number) {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.panelClass = 'delete_comment';
@@ -274,6 +364,9 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Deletes the current thread, including associated messages and chat data.
+   */
   deleteThread() {
     this.msgService.deleteMessage(this.fsDataThreadService.direct_chat_index, this.fsDataThreadService.current_chat_data)
     this.fsDataThreadService.deletThread()
@@ -281,6 +374,11 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Update a thread at the specified index.
+   *
+   * @param {number} i - The index of the thread to update.
+   */
   updateThread(i: number) {
     this.fsDataThreadService.comments.splice(i, 1)
     this.fsDataThreadService.fake_array.length = this.fsDataThreadService.comments.length
@@ -288,18 +386,32 @@ export class ThreadComponent implements OnInit {
   }
 
 
-  checkIfLastAnswer() {
+  /**
+   * Check if the last answer.
+   *
+   * @return {boolean} true if last answer, false otherwise
+   */
+  checkIfLastAnswer(): boolean {
     if (this.fsDataThreadService.current_chat_data.answers == 1 && this.fsDataThreadService.current_chat_data.message_deleted) return true
     else return false
   }
 
 
+  /**
+   * Opens the delete message functionality.
+   */
   openDeleteMessage() {
     this.edit_comment = false;
     this.msgService.openDeleteMessage(this.fsDataThreadService.direct_chat_index, this.fsDataThreadService.current_chat_data)
   }
 
 
+  /**
+   * Function to show React users.
+   *
+   * @param {number} i - The first index
+   * @param {number} j - The second index
+   */
   showReactUsers(i: number, j: number) {
     if (this.hovered_emoji == false) this.hovered_emoji = true
     this.comment_index = i
@@ -307,41 +419,74 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Closes the show react users and resets the hovered emoji flag if it's true.
+   */
   closeShowReactUsers() {
     if (this.hovered_emoji == true) this.hovered_emoji = false
   }
 
 
+  /**
+   * Opens the users and sets a flag to indicate that the users are open.
+   */
   openUsers() {
     this.getAllUsers()
     this.chatService.open_users = true
   }
 
 
+  /**
+   * Retrieves the image URL for a user with the given unique identifier.
+   *
+   * @param {string} uid - The unique identifier of the user
+   * @return {string} The URL of the user's avatar image
+   */
   getImageUrl(uid: string): string {
     const user = this.authService.all_users.find(element => element.uid === uid);
     return user.avatar
   }
 
 
+  /**
+   * Retrieves the user name associated with the given UID.
+   *
+   * @param {string} uid - the unique identifier of the user
+   * @return {string} the user name associated with the UID
+   */
   getUserName(uid: string) {
     const user = this.authService.all_users.find(element => element.uid === uid);
     return user.user_name
   }
 
 
-  getUserEmail(uid: string) {
+  /**
+   * Retrieves the email of the user with the given UID.
+   *
+   * @param {string} uid - The unique identifier of the user
+   * @return {string} The email of the user
+   */
+  getUserEmail(uid: string): string {
     const user = this.authService.all_users.find(element => element.uid === uid);
     return user.email
   }
 
 
+  /**
+   * Opens the attachment menu.
+   */
   openAttachmentMenu() {
     this.open_attachment_menu = true
     this.uploadService.chat_section = 'thread'
   }
 
 
+  /**
+   * Function to add or remove emojis on a direct chat message.
+   *
+   * @param {number} i - the index of the message
+   * @param {number} j - the index of the emoji
+   */
   addOrRemoveEmojisOnDirectChatMessage(i: number, j: number) {
     this.hovered_emoji = false
     let chatMessages = this.chatService.directChatMessages;
@@ -351,6 +496,12 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Adds an emoji in a direct message.
+   *
+   * @param {any} $event - the event triggering the emoji addition
+   * @param {number} i - the index of the chat message
+   */
   addEmojiInDirectMessage($event: any, i: number) {
     let chatMessages = this.chatService.directChatMessages;
     let user = this.authService.userData.uid;
@@ -360,22 +511,42 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Handles the change of the text input.
+   *
+   * @param {string} text - the new text input
+   */
   textChanged(text: string) {
     this.comment_value = this.chatService.textChanged(text)
   }
 
 
+  /**
+   * Adds the user to the textarea at the specified index.
+   *
+   * @param {number} i - the index where the user should be added
+   */
   addUserToTextarea(i: number) {
     this.messageTextarea.nativeElement.focus();
     this.comment_value = this.chatService.addUserToTextarea(i, this.comment_value)
   }
 
 
-  async getAllUsers() {
+  /**
+   * Get all users asynchronously.
+   *
+   * @return {Promise<void>} The result of getting all users.
+   */
+  async getAllUsers(): Promise<void> {
     this.chatService.at_users = await this.authService.getAllUsers();
   }
 
 
+  /**
+   * Handles the 'Enter' key event.
+   *
+   * @param {KeyboardEvent} event - the keyboard event
+   */
   handleEnter(event: KeyboardEvent): void {
     if (event.key === 'Enter') {
       event.preventDefault();
@@ -388,8 +559,24 @@ export class ThreadComponent implements OnInit {
   }
 
 
+  /**
+   * Deletes the upload file with the given filename and k value.
+   *
+   * @param {string} filename - The name of the file to be deleted
+   * @param {number} k - The k value
+   */
   deleteUploadFile(filename: string, k: number) {
     this.uploadService.deleteSelectedFile(filename, this.fsDataThreadService.direct_chat_index, k, 'mainChat')
     if (this.fsDataThreadService.current_chat_data.answers == 0 && this.fsDataThreadService.current_chat_data.chat_message == '') this.deleteThread()
+  }
+
+
+  autoFocus() {
+    if( this.chatService.thread_open){
+      if(this.messageTextarea) this.messageTextarea.nativeElement.focus();
+    } 
+    else {
+    if(this.messageTextarea) this.messageTextarea.nativeElement.blur();
+    }
   }
 }

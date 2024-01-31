@@ -11,7 +11,7 @@
     </div>
 </div>
 <section class="write-new-message">
-    <textarea [disabled]="noChatSelected()" #messageTextarea name="" id="" cols="10" rows="2"
+    <textarea  [disabled]="noChatSelected()" #messageTextarea name="" id="" cols="10" rows="2" 
         [placeholder]="chatService.messageToPlaceholder" (keydown)="handleEnter($event)"
         [(ngModel)]="msgService.messageText" (keyup.enter)="onSendClick()"></textarea>
     <div class="extend-send-message">
