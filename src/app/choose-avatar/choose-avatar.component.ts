@@ -89,7 +89,7 @@ export class ChooseAvatarComponent implements OnInit {
   /**
    * redirects to main
    */
-  async goToMain() {
+   goToMain() {
     this.router.navigateByUrl('/main');
   }
 }

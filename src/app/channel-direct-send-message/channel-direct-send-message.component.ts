@@ -68,12 +68,18 @@ export class ChannelDirectSendMessageComponent {
   }
 
 
+  /**
+   * Adds emoji to the textarea.
+   *
+   * @param {any} $event - the event triggering the function
+   */
   addEmojitoTextarea($event: any) {
     this.emojiService.addEmojitoTextarea($event)
     this.msgService.messageText += this.emojiService.textMessage;
     this.emojiService.textMessage = '';
     this.msgService.checkIfEmpty();
   }
+  
 
   public async onSendClick() {
     if (!this.validateNewMessageComponentConditions()) {
@@ -191,7 +197,6 @@ export class ChannelDirectSendMessageComponent {
     }
     else {
       if(this.messageTextarea && !this.chatService.thread_open) {
-      this.messageTextarea.nativeElement.focus();
       return false;
       }
       return false
@@ -204,6 +209,11 @@ export class ChannelDirectSendMessageComponent {
   }
 
 
+  /**
+   * noFileSelected checks if a file has been selected for upload.
+   *
+   * @return {boolean} true if a file has been selected, otherwise false
+   */
   noFileSelected() {
     return this.uploadService.upload_array.file_name.length !== 0;
   }
