@@ -328,7 +328,7 @@
 
         <!------------------------------------------------------------------TextField-->
 
-        <textarea  #messageTextarea type="text" [(ngModel)]="comment_value" (keyup.enter)="postComment()" [autofocus]="autoFocus()"
+        <textarea  #messageTextarea type="text" [(ngModel)]="comment_value" (keyup.enter)="postComment()" 
             (keydown)="handleEnter($event)" (ngModelChange)="textChanged($event)" placeholder="Antworten..."></textarea>
         <div class="icons_main">
             <div class="icons">

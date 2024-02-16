@@ -569,14 +569,4 @@ export class ThreadComponent implements OnInit {
     this.uploadService.deleteSelectedFile(filename, this.fsDataThreadService.direct_chat_index, k, 'mainChat')
     if (this.fsDataThreadService.current_chat_data.answers == 0 && this.fsDataThreadService.current_chat_data.chat_message == '') this.deleteThread()
   }
-
-
-  autoFocus() {
-    if( this.chatService.thread_open){
-      if(this.messageTextarea) this.messageTextarea.nativeElement.focus();
-    } 
-    else {
-    if(this.messageTextarea) this.messageTextarea.nativeElement.blur();
-    }
-  }
 }
